@@ -8,10 +8,10 @@
 
 - SSTF - Fully functional. Tested and verified.
 
-- Scan - Functional. Unit tested. Awaiting verification.
+- Scan - Functional. Tested and verified.
 
-- CScan - Functional. Unit tested. Awaiting verification.
+- CScan - Functional. Tested and verified.
 
-- Look - Functional. Unit tested. Awaiting verification.
+- Look - Functional. Tested and verified.
 
-- CLook - Functional. Unit tested. Awaiting verification.
+- CLook - Functional. Tested and verified.
