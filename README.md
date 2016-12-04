@@ -1,11 +1,17 @@
 # dsksch
 
-GUI written by idkwhatamidoing
+##GUI
 
-Algorithm written by boeyjw
-FCFS - Fully functional. Tested and verified.
-SSTF - Fully functional. Tested and verified.
-Scan - Functional. Pending tests.
-CScan - Functional. Pending tests.
-Look - Functional. Pending tests.
-CLook - Functional. Pending tests.
+##Algorithm
+
+- FCFS - Fully functional. Tested and verified.
+
+- SSTF - Fully functional. Tested and verified.
+
+- Scan - Functional. Unit tested. Awaiting verification.
+
+- CScan - Functional. Unit tested. Awaiting verification.
+
+- Look - Functional. Unit tested. Awaiting verification.
+
+- CLook - Functional. Unit tested. Awaiting verification.
