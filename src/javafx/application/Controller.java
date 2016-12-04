@@ -38,14 +38,6 @@ public class Controller implements EventHandler<ActionEvent>{
 		@FXML
 		private TextField currenthead;
 		@FXML
-		private CheckBox light;
-		@FXML
-		private CheckBox medium;
-		@FXML
-		private CheckBox heavy;
-		@FXML
-		private CheckBox custom;
-		@FXML
 		private TextField jobreq;
 		@FXML
 		private CheckBox fcfs;
@@ -65,16 +57,10 @@ public class Controller implements EventHandler<ActionEvent>{
 		private Label description;
 		@FXML
 		private Label customgraph_label;
-		
 		//pane
 		@FXML
 		private Pane custom_pane;
-		@FXML
-		private Pane lightgraph_pane;
-		@FXML
-		private Pane mediumgraph_pane;
-		@FXML
-		private Pane heavygraph_pane;
+
 		@FXML
 		private Pane customgraph_pane;
 		
@@ -102,81 +88,11 @@ public class Controller implements EventHandler<ActionEvent>{
 	    private static int seriesCounter = 0;
 
         private ControllerBroker cbr = new ControllerBroker();
-        private ArrayList<LinkedList<LinkedList<XYChart.Series<String,Number>>>> lsLoad = new ArrayList<LinkedList<LinkedList<XYChart.Series<String,Number>>>>(); 
+        //private ArrayList<LinkedList<LinkedList<XYChart.Series<String,Number>>>> lsLoad = new ArrayList<LinkedList<LinkedList<XYChart.Series<String,Number>>>>(); 
         private LinkedList<LinkedList<XYChart.Series<String,Number>>> lsAlgorithm = new LinkedList<LinkedList<XYChart.Series<String,Number>>>(); 
 	    private LinkedList<XYChart.Series<String,Number>> lsSeries = new LinkedList<XYChart.Series<String,Number>>(); 
   
-	    
-		
-		//handle input of load options
-	    private void loadOptions(){
 
-	    	if(fcfs.isSelected()==false && sstf.isSelected()==false && scan.isSelected()==false && cscan.isSelected()==false && look.isSelected()==false && clook.isSelected()==false)
-	    		message2="Kindly select at least 1 algorithm to run simulation."; 
-	    	
-	    	if(light.isSelected()==true){
-	        	int[] q = {50, 61, 74, 79, 62, 78, 60, 51, 48, 40, 199}; 
-	        	helper(q,light_linechart);
-				lightgraph_pane.setVisible(true);
-				algorithmOptionCheck();
-	        } 
-	        if(medium.isSelected()==true){
-	        	int[] q = {50, 63, 77, 89, 132, 103, 89, 85, 46, 35, 199};
-	        	helper(q,medium_linechart);
-				mediumgraph_pane.setVisible(true);
-				algorithmOptionCheck();	
-	        }
-	        if(heavy.isSelected()==true){
-	        	int[] q = {50, 154, 32, 101, 189, 23, 101, 32, 89, 154, 32, 199};
-	        	helper(q,heavy_linechart); 
-				heavygraph_pane.setVisible(true);
-				algorithmOptionCheck();	
-	        }
-	        if(custom.isSelected()==true){
-	        	try{
-	        		cylinder = Integer.parseInt(cylinderamount.getText());
-					head = Integer.parseInt(currenthead.getText());
-	        		for(String temp:jobreq.getText().replaceAll("\\s+", "").split(","))
-		        		queue.add(Integer.parseInt(temp));	
-	        		algorithmOptions(custom_linechart);	
-	        		customgraph_label.setText("Custom Load"+queue);
-					customgraph_pane.setVisible(true);
-					algorithmOptionCheck();	
-	        	}catch(NumberFormatException|NullPointerException e){
-	        		message="Please make sure all text input is in integer.\nJob request must be filled and must only contain integers separated by comma.";
-	        		errorMessage();
-	        	}	
-	        }
-	        if(light.isSelected()==false && medium.isSelected()==false && heavy.isSelected()==false && custom.isSelected()==false){
-	        	message="Kindly select at least 1 Load Type to run simulation.";
-	        	errorMessage();
-			}
-	    }
-	    
-	    
-	    //get head and no. of cylinder for preset load
-	    private void helper(int[] q, LineChart<String, Number> linechart){
-	    	queue.clear();
-	    	head=q[0];
-        	cylinder=200;
-        	for(int i=0; i<q.length; i++) 
-        		queue.add(q[i]); 
-        	queue.addFirst(head);
-			queue.addLast(cylinder);
-			algorithmOptions(linechart);
-			addLoadSeries();
-	    }
-	    
-	    
-	    //check if any algorithm is selected, display error message if none selected
-	    private void algorithmOptionCheck(){
-	    	if(fcfs.isSelected()==false && sstf.isSelected()==false && scan.isSelected()==false && cscan.isSelected()==false && look.isSelected()==false && clook.isSelected()==false){
-	    		message="Kindly select at least 1 algorithm to run simulation."; 
-	    		errorMessage();
-	    	}
-	    }
-	    
-	    
 	    //handle input algorithm option
 	    private void algorithmOptions(LineChart<String, Number> linechart){
 	    	LinkedList<Integer> temp = new LinkedList<Integer>();
@@ -211,7 +127,16 @@ public class Controller implements EventHandler<ActionEvent>{
 	    		addAlgorithmSeries(linechart);
 	    	}	  
 	    }
-	      
+	   
+	    
+	    //check if any algorithm is selected, display error message if none selected
+	    private void algorithmOptionCheck(){
+	    	if(fcfs.isSelected()==false && sstf.isSelected()==false && scan.isSelected()==false && cscan.isSelected()==false && look.isSelected()==false && clook.isSelected()==false){
+	    		message="Kindly select at least 1 algorithm to run simulation."; 
+	    		errorMessage();
+	    	}
+	    }
+	    
 	    
 	    //to put the data nodes into a series 
 	    private void graphingData(LinkedList<Integer> tmp, String operation) {
@@ -237,11 +162,6 @@ public class Controller implements EventHandler<ActionEvent>{
 	    		linechart.getData().add(lsSeries.get(i));
 	    }
 
-	    
-	    //to put multiple algorithms results into a list
-	    private void addLoadSeries(){
-	    	lsLoad.add(lsAlgorithm);
-	    }
 
 	    
 		//to clear all values to default (null)
@@ -251,23 +171,20 @@ public class Controller implements EventHandler<ActionEvent>{
 			if(event.getSource() == reset){
 				int i = 0;
 
-				lsLoad.clear();
-				
+				lsSeries.clear();
+				lsAlgorithm.clear();
+								
 				cylinderamount.clear();
 				currenthead.clear();
 				jobreq.clear();
 				queue.clear();
 				
-				custom_pane.setVisible(false);
+				/*custom_pane.setVisible(false);
 				lightgraph_pane.setVisible(false);
 				mediumgraph_pane.setVisible(false);
-				heavygraph_pane.setVisible(false);
+				heavygraph_pane.setVisible(false);*/
 				customgraph_pane.setVisible(false);
 				
-				light.setSelected(false);
-				medium.setSelected(false);
-				heavy.setSelected(false);
-				custom.setSelected(false);
 				fcfs.setSelected(false);
 				sstf.setSelected(false);
 				scan.setSelected(false);
@@ -288,11 +205,25 @@ public class Controller implements EventHandler<ActionEvent>{
 		}
 	    
 	    
-		//to pass parameters to backend
-		//run simulation
+		//to pass parameters and run simulation
 	    @FXML
 		public void simulate(ActionEvent event){
-				loadOptions();
+	    	try{
+				algorithmOptionCheck();	
+        		cylinder = Integer.parseInt(cylinderamount.getText());
+				head = Integer.parseInt(currenthead.getText());
+				queue.add(head);
+        		for(String temp:jobreq.getText().replaceAll("\\s+", "").split(","))
+	        		queue.add(Integer.parseInt(temp));	
+        		queue.add(cylinder);
+        		algorithmOptions(custom_linechart);	
+        		customgraph_label.setText("Custom Load"+queue);
+				customgraph_pane.setVisible(true);
+				
+        	}catch(NumberFormatException e){
+        		message="Please make sure all text input is in integer.\nJob request must be filled and must only contain integers separated by comma.";
+        		errorMessage();
+        	}
 		}
 		
 		//display error dialogue	
@@ -302,10 +233,11 @@ public class Controller implements EventHandler<ActionEvent>{
 			alert.setContentText(message+"\n"+message2);
 			alert.showAndWait();
 
-			lightgraph_pane.setVisible(false);
+			/*lightgraph_pane.setVisible(false);
 			mediumgraph_pane.setVisible(false);
-			heavygraph_pane.setVisible(false);
-			customgraph_pane.setVisible(false);
+			heavygraph_pane.setVisible(false);*/
+			//customgraph_pane.setVisible(false);
+			
 			
 			//flush message
 			message="";
