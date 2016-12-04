@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.chart.NumberAxis?>
+
+<AnchorPane fx:id="base_pane" prefHeight="990.0" prefWidth="1352.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafx.application.Controller">
+   <children>
+      <SplitPane fx:id="basesplit_pane" dividerPositions="0.3665644171779141" layoutX="8.0" layoutY="8.0" prefHeight="841.0" prefWidth="1306.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <items>
+          <AnchorPane fx:id="leftsplitv_pane" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+               <children>
+                  <SplitPane fx:id="leftsplith_pane" dividerPositions="0.6439665471923537" orientation="VERTICAL" prefHeight="839.0" prefWidth="474.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <items>
+                      <AnchorPane fx:id="leftup_pane" minHeight="0.0" minWidth="0.0" prefHeight="509.0" prefWidth="472.0">
+                           <children>
+                              <Label fx:id="main_label" layoutX="24.0" layoutY="23.0" text="Input">
+                                 <font>
+                                    <Font size="32.0" />
+                                 </font>
+                              </Label>
+                              <Pane fx:id="load_pane" layoutX="13.0" layoutY="70.0" prefHeight="92.0" prefWidth="432.0">
+                                 <children>
+                                    <CheckBox fx:id="light" layoutX="17.0" layoutY="57.0" mnemonicParsing="false" text="Light" />
+                                    <CheckBox fx:id="medium" layoutX="104.0" layoutY="57.0" mnemonicParsing="false" text="Medium" />
+                                    <CheckBox fx:id="heavy" layoutX="217.0" layoutY="57.0" mnemonicParsing="false" text="Heavy" />
+                                    <CheckBox fx:id="custom" layoutX="323.0" layoutY="57.0" mnemonicParsing="false" onAction="#handle" text="Custom" />
+                                    <Label layoutX="14.0" layoutY="14.0" text="Load type:" />
+                                 </children>
+                              </Pane>
+                              <Pane fx:id="custom_pane" layoutX="-4.0" layoutY="163.0" prefHeight="187.0" prefWidth="481.0" visible="false">
+                                 <children>
+                                    <Pane fx:id="cylinder_pane" layoutX="13.0" layoutY="14.0" prefHeight="54.0" prefWidth="456.0">
+                                       <children>
+                                          <Label layoutX="14.0" layoutY="17.0" text="Total no. of cylinder:">
+                                             <tooltip>
+                                                <Tooltip text="Total number of cylinder on a disk." />
+                                             </tooltip></Label>
+                                          <TextField fx:id="cylinderamount" layoutX="165.0" layoutY="12.0" prefHeight="31.0" prefWidth="261.0" promptText="Enter integer here">
+                                             <tooltip>
+                                                <Tooltip text="Total number of cylinder on a disk." />
+                                             </tooltip></TextField>
+                                       </children>
+                                    </Pane>
+                                    <Pane layoutX="13.0" layoutY="68.0" prefHeight="47.0" prefWidth="456.0">
+                                       <children>
+                                          <Label fx:id="head_pane" layoutX="14.0" layoutY="13.0" text="Current head:">
+                                             <tooltip>
+                                                <Tooltip text="The cylinder where the head is currently." />
+                                             </tooltip></Label>
+                                          <TextField fx:id="currenthead" layoutX="164.0" layoutY="8.0" prefHeight="31.0" prefWidth="261.0" promptText="Enter integer here">
+                                             <tooltip>
+                                                <Tooltip text="The cylinder where the head is currently." />
+                                             </tooltip></TextField>
+                                       </children>
+                                    </Pane>
+                                    <Pane fx:id="req_pane" layoutX="14.0" layoutY="109.0" prefHeight="54.0" prefWidth="438.0">
+                                       <children>
+                                          <Label fx:id="jobreq_label" layoutX="14.0" layoutY="14.0" text="Job Requests:">
+                                             <tooltip>
+                                                <Tooltip text="The job request queue in the cylinder." />
+                                             </tooltip></Label>
+                                          <TextField fx:id="jobreq" layoutX="163.0" layoutY="12.0" prefHeight="31.0" prefWidth="261.0" promptText="Enter integer separated by comma">
+                                             <tooltip>
+                                                <Tooltip text="The job request queue in the cylinder." />
+                                             </tooltip></TextField>
+                                       </children>
+                                    </Pane>
+                                 </children>
+                              </Pane>
+                              <Pane fx:id="algorithm_pane" layoutX="10.0" layoutY="346.0" prefHeight="104.0" prefWidth="438.0">
+                                 <children>
+                                    <Label fx:id="algorithm_label" layoutX="14.0" layoutY="4.0" text="Algorithm:" />
+                                    <CheckBox fx:id="fcfs" layoutX="19.0" layoutY="34.0" mnemonicParsing="false" text="FCFS" />
+                                    <CheckBox fx:id="sstf" layoutX="174.0" layoutY="34.0" mnemonicParsing="false" text="SSTF" />
+                                    <CheckBox fx:id="scan" layoutX="319.0" layoutY="34.0" mnemonicParsing="false" text="SCAN" />
+                                    <CheckBox fx:id="cscan" layoutX="19.0" layoutY="64.0" mnemonicParsing="false" text="CSCAN" />
+                                    <CheckBox fx:id="look" layoutX="174.0" layoutY="64.0" mnemonicParsing="false" text="LOOK" />
+                                    <CheckBox fx:id="clook" layoutX="319.0" layoutY="64.0" mnemonicParsing="false" text="CLOOK" />
+                                 </children>
+                              </Pane>
+                              <Button fx:id="reset" layoutX="264.0" layoutY="458.0" mnemonicParsing="false" onAction="#reset" text="Reset All">
+                                 <tooltip>
+                                    <Tooltip text="Clear all values." />
+                                 </tooltip></Button>
+                              <Button fx:id="simulate" layoutX="355.0" layoutY="458.0" mnemonicParsing="false" onAction="#simulate" text="Simulate">
+                                 <tooltip>
+                                    <Tooltip text="Run simulation to display graph(s)." />
+                                 </tooltip></Button>
+                           </children>
+                        </AnchorPane>
+                      <AnchorPane fx:id="leftdown_pane" minHeight="0.0" minWidth="0.0" prefHeight="304.0" prefWidth="472.0">
+                           <children>
+                              <Label fx:id="desc_label" layoutX="14.0" layoutY="14.0" text="Description">
+                                 <font>
+                                    <Font size="32.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="description" layoutX="23.0" layoutY="94.0" prefHeight="139.0" prefWidth="416.0" text="This is a simple program to simulate and visualise disk scheduling.Select a load type and algorithm to run.\nMultiple selection for comparison is supported.\n\" />
+                           </children>
+                        </AnchorPane>
+                    </items>
+                  </SplitPane>
+               </children>
+            </AnchorPane>
+          <AnchorPane fx:id="rightsplitv_pane" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+               <children>
+                  <ScrollPane fx:id="rightscroll_pane" layoutX="-14.0" prefHeight="984.0" prefWidth="935.0" AnchorPane.bottomAnchor="4.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <content>
+                      <AnchorPane fx:id="rscroll_pane" minHeight="0.0" minWidth="0.0" prefHeight="2960.0" prefWidth="934.0">
+                           <children>
+                              <VBox fx:id="vbox" prefHeight="2955.0" prefWidth="919.0">
+                                 <children>
+                                    <Pane fx:id="lightgraph_pane" prefHeight="709.0" prefWidth="919.0" visible="false">
+                                       <children>
+                                          <Label fx:id="lightgraph_label" layoutX="46.0" layoutY="111.0" text="Light Load: [ 50, 61, 74, 79, 62, 78, 60, 51, 48, 40, 199 ]" />
+                                          <LineChart fx:id="light_linechart" layoutX="35.0" layoutY="145.0" prefHeight="518.0" prefWidth="768.0">
+                                            <xAxis>
+                                              <CategoryAxis side="BOTTOM" />
+                                            </xAxis>
+                                            <yAxis>
+                                              <NumberAxis side="LEFT" />
+                                            </yAxis>
+                                          </LineChart>
+                                       </children>
+                                    </Pane>
+                                    <Pane fx:id="mediumgraph_pane" prefHeight="726.0" prefWidth="919.0" visible="false">
+                                       <children>
+                                          <Label fx:id="mediumgraph_label" layoutX="56.0" layoutY="51.0" text="Medium Load: [ 50, 63, 77, 89, 132, 103, 89, 85, 46, 35, 199 ] " />
+                                          <LineChart fx:id="medium_linechart" layoutX="46.0" layoutY="97.0" prefHeight="572.0" prefWidth="768.0">
+                                             <xAxis>
+                                                <CategoryAxis side="BOTTOM" />
+                                             </xAxis>
+                                             <yAxis>
+                                                <NumberAxis side="LEFT" />
+                                             </yAxis>
+                                          </LineChart>
+                                       </children>
+                                    </Pane>
+                                    <Pane fx:id="heavygraph_pane" prefHeight="639.0" prefWidth="919.0" visible="false">
+                                       <children>
+                                          <Label fx:id="heavygraph_label" layoutX="63.0" layoutY="35.0" text="Heavy Load: [ 50, 63, 77, 89, 132, 103, 89, 85, 46, 35, 199 ]" />
+                                          <LineChart fx:id="heavy_linechart" layoutX="48.0" layoutY="77.0" prefHeight="518.0" prefWidth="768.0">
+                                             <xAxis>
+                                                <CategoryAxis side="BOTTOM" />
+                                             </xAxis>
+                                             <yAxis>
+                                                <NumberAxis side="LEFT" />
+                                             </yAxis>
+                                          </LineChart>
+                                       </children>
+                                    </Pane>
+                                    <Pane fx:id="customgraph_pane" prefHeight="653.0" prefWidth="919.0" visible="false">
+                                       <children>
+                                          <Label layoutX="15.0" layoutY="36.0" text="Custom Load: [ ]" />
+                                          <LineChart fx:id="custom_linechart" layoutX="55.0" layoutY="92.0" prefHeight="518.0" prefWidth="768.0">
+                                             <xAxis>
+                                                <CategoryAxis side="BOTTOM" />
+                                             </xAxis>
+                                             <yAxis>
+                                                <NumberAxis side="LEFT" />
+                                             </yAxis>
+                                          </LineChart>
+                                       </children>
+                                    </Pane>
+                                 </children></VBox>
+                              <Label fx:id="graph_label" layoutX="32.0" layoutY="20.0" text="Graph">
+                                 <font>
+                                    <Font size="32.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </AnchorPane>
+                    </content>
+                  </ScrollPane>
+               </children>
+            </AnchorPane>
+        </items>
+      </SplitPane>
+   </children>
+</AnchorPane>
