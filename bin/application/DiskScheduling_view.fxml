@@ -99,7 +99,7 @@
                                     <Font size="32.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="description" layoutX="23.0" layoutY="94.0" prefHeight="139.0" prefWidth="416.0" text="This is a simple program to simulate and visualise disk scheduling.Select a load type and algorithm to run.\nMultiple selection for comparison is supported.\n\" />
+                              <TextArea fx:id="description_text" editable="false" layoutX="14.0" layoutY="61.0" prefHeight="268.0" prefWidth="496.0" text="This is a simple disk scheduling simulator to compare the efficiency &#10;of disk scheduling algorithms. &#10;&#10;Multiple selection for comparison is supported.&#10;&#10;Reset All to clear all parameters.&#10;Simulate to run simulation." />
                            </children>
                         </AnchorPane>
                     </items>

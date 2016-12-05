@@ -1,6 +1,5 @@
 package javafx.application;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
@@ -17,8 +16,8 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Tooltip;
 import javafx.scene.layout.Pane;
 
 import osc.diskscheduling.algorithm.ControllerBroker;
@@ -52,9 +51,9 @@ public class Controller implements EventHandler<ActionEvent>{
 		@FXML
 		private CheckBox clook;
 		
-		//label 
+		//text 
 		@FXML
-		private Label description;
+		private TextArea description_text;
 		@FXML
 		private Label customgraph_label;
 		//pane
@@ -68,9 +67,11 @@ public class Controller implements EventHandler<ActionEvent>{
 		private static String message="";
 		private static String message2="";
 		private static String des="";
-		private static int cylinder;
-		private static int head;
 		private LinkedList<Integer> queue = new LinkedList<Integer>();
+		private int cylinder;
+		private int head; 
+		private static int rflag=1;
+		private static int sflag=-1;
 		
 		//graph
         @FXML
@@ -78,20 +79,13 @@ public class Controller implements EventHandler<ActionEvent>{
 	    @FXML
 	    private NumberAxis yAxis;
 	    @FXML
-	    private LineChart<String, Number> light_linechart;
-	    @FXML
-	    private LineChart<String, Number> medium_linechart;
-	    @FXML
-	    private LineChart<String, Number> heavy_linechart;
-	    @FXML
 	    private LineChart<String, Number> custom_linechart;
 	    private static int seriesCounter = 0;
 
         private ControllerBroker cbr = new ControllerBroker();
-        //private ArrayList<LinkedList<LinkedList<XYChart.Series<String,Number>>>> lsLoad = new ArrayList<LinkedList<LinkedList<XYChart.Series<String,Number>>>>(); 
-        private LinkedList<LinkedList<XYChart.Series<String,Number>>> lsAlgorithm = new LinkedList<LinkedList<XYChart.Series<String,Number>>>(); 
-	    private LinkedList<XYChart.Series<String,Number>> lsSeries = new LinkedList<XYChart.Series<String,Number>>(); 
-  
+        private static LinkedList<LinkedList<XYChart.Series<String,Number>>> lsAlgorithm = new LinkedList<LinkedList<XYChart.Series<String,Number>>>(); 
+	    private LinkedList<XYChart.Series<String,Number>> lsSeries = new LinkedList<XYChart.Series<String,Number>>();
+		
 
 	    //handle input algorithm option
 	    private void algorithmOptions(LineChart<String, Number> linechart){
@@ -140,8 +134,6 @@ public class Controller implements EventHandler<ActionEvent>{
 	    
 	    //to put the data nodes into a series 
 	    private void graphingData(LinkedList<Integer> tmp, String operation) {
-	    	int totalSeek = tmp.pop();
-	    	int tail = tmp.pop();
 	    	char i = '0';
 	    	ListIterator<Integer> itTmp = tmp.listIterator();
 	    	
@@ -155,8 +147,12 @@ public class Controller implements EventHandler<ActionEvent>{
 	    }
 	    
 	    
+	    private void clearGraph(){
+	    	custom_linechart.getData().clear();
+	    }
+	    
 	    //put resulting series for algorithm into a list and add data series to load linechart 
-	    private void addAlgorithmSeries(LineChart linechart){
+	    private void addAlgorithmSeries(LineChart<String, Number> linechart){
 	    	lsAlgorithm.add(lsSeries);
 	    	for(int i = 0; i < seriesCounter; i++)
 	    		linechart.getData().add(lsSeries.get(i));
@@ -167,23 +163,21 @@ public class Controller implements EventHandler<ActionEvent>{
 		//to clear all values to default (null)
 	    @FXML
 		public void reset(ActionEvent event) {
-			
-			if(event.getSource() == reset){
+			if(event.getSource() == reset && rflag==sflag){
+				rflag=-rflag;
 				int i = 0;
 
 				lsSeries.clear();
 				lsAlgorithm.clear();
+				clearGraph();
 								
 				cylinderamount.clear();
 				currenthead.clear();
 				jobreq.clear();
 				queue.clear();
+				seriesCounter = 0;
 				
-				/*custom_pane.setVisible(false);
-				lightgraph_pane.setVisible(false);
-				mediumgraph_pane.setVisible(false);
-				heavygraph_pane.setVisible(false);*/
-				customgraph_pane.setVisible(false);
+				//customgraph_pane.setVisible(false);
 				
 				fcfs.setSelected(false);
 				sstf.setSelected(false);
@@ -195,10 +189,12 @@ public class Controller implements EventHandler<ActionEvent>{
                 message="";
                 message2="";
                 
-				description.setText(
-						"This is a simple program to simulate and visualise disk scheduling.\n"
-						+"Select a load type and algorithm to run.\n"
-						+"Multiple selection for comparison is supported.\n\n"
+				description_text.setText(
+						"This is a simple disk scheduling simulator to compare the efficiency\n"
+						+ "of disk scheduling algorithms.\n\n" 
+						+ "Multiple selection for comparison is supported.\n\n"
+						+ "Reset All to clear all parameters.\n"
+						+ "Simulate to run simulation.\n"
 						+des
 						);				
 			}	
@@ -209,17 +205,17 @@ public class Controller implements EventHandler<ActionEvent>{
 	    @FXML
 		public void simulate(ActionEvent event){
 	    	try{
-				algorithmOptionCheck();	
-        		cylinder = Integer.parseInt(cylinderamount.getText());
-				head = Integer.parseInt(currenthead.getText());
-				queue.add(head);
-        		for(String temp:jobreq.getText().replaceAll("\\s+", "").split(","))
-	        		queue.add(Integer.parseInt(temp));	
-        		queue.add(cylinder);
-        		algorithmOptions(custom_linechart);	
-        		customgraph_label.setText("Custom Load"+queue);
-				customgraph_pane.setVisible(true);
-				
+				if(rflag!=sflag){
+					sflag = -sflag;
+					algorithmOptionCheck();	
+	        		cylinder = Integer.parseInt(cylinderamount.getText());
+					head = Integer.parseInt(currenthead.getText());
+	        		for(String temp:jobreq.getText().replaceAll("\\s+", "").split(","))
+		        		queue.add(Integer.parseInt(temp));	
+	        		algorithmOptions(custom_linechart);	
+	        		customgraph_label.setText("Custom Load"+queue);
+					customgraph_pane.setVisible(true);
+				}					
         	}catch(NumberFormatException e){
         		message="Please make sure all text input is in integer.\nJob request must be filled and must only contain integers separated by comma.";
         		errorMessage();
@@ -233,11 +229,7 @@ public class Controller implements EventHandler<ActionEvent>{
 			alert.setContentText(message+"\n"+message2);
 			alert.showAndWait();
 
-			/*lightgraph_pane.setVisible(false);
-			mediumgraph_pane.setVisible(false);
-			heavygraph_pane.setVisible(false);*/
 			//customgraph_pane.setVisible(false);
-			
 			
 			//flush message
 			message="";
