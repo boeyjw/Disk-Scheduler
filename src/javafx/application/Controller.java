@@ -125,7 +125,7 @@ public class Controller implements EventHandler<ActionEvent>{
 	    		temp = cbr.algorithmSelector(queue, ControllerBroker.CLOOK);
 	    		graphingData(temp, "CLook");
 	    		addAlgorithmSeries(linechart);
-	    	}	  
+	    	}
 	    }
 	   
 	    
