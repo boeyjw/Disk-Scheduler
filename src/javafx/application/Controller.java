@@ -136,6 +136,8 @@ public class Controller implements EventHandler<ActionEvent>{
 	    private void graphingData(LinkedList<Integer> tmp, String operation) {
 	    	char i = '0';
 	    	ListIterator<Integer> itTmp = tmp.listIterator();
+	    	itTmp.next();
+	    	itTmp.next();
 	    	
 	    	lsSeries.add(new XYChart.Series<String,Number>());
 	    	lsSeries.get(seriesCounter).setName(operation);
@@ -146,10 +148,6 @@ public class Controller implements EventHandler<ActionEvent>{
 	    	seriesCounter++;
 	    }
 	    
-	    
-	    private void clearGraph(){
-	    	custom_linechart.getData().clear();
-	    }
 	    
 	    //put resulting series for algorithm into a list and add data series to load linechart 
 	    private void addAlgorithmSeries(LineChart<String, Number> linechart){
@@ -166,10 +164,10 @@ public class Controller implements EventHandler<ActionEvent>{
 			if(event.getSource() == reset && rflag==sflag){
 				rflag=-rflag;
 				int i = 0;
-
+				
+				custom_linechart.getData().clear();
 				lsSeries.clear();
 				lsAlgorithm.clear();
-				clearGraph();
 								
 				cylinderamount.clear();
 				currenthead.clear();
@@ -210,8 +208,12 @@ public class Controller implements EventHandler<ActionEvent>{
 					algorithmOptionCheck();	
 	        		cylinder = Integer.parseInt(cylinderamount.getText());
 					head = Integer.parseInt(currenthead.getText());
+					
+					queue.add(head);
 	        		for(String temp:jobreq.getText().replaceAll("\\s+", "").split(","))
 		        		queue.add(Integer.parseInt(temp));	
+	        		queue.add(cylinder);
+	        		
 	        		algorithmOptions(custom_linechart);	
 	        		customgraph_label.setText("Custom Load"+queue);
 					customgraph_pane.setVisible(true);
