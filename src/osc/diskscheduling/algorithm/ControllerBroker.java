@@ -31,20 +31,20 @@ public class ControllerBroker {
 		Iterator<Integer> itQueue = inputQueue.iterator();
 		LinkedList<Integer> modQueue = new LinkedList<Integer>();
 		
-		if(operation == 1 || operation == 2) {
+		if(operation == FCFS || operation == SSTF) {
 			dsFunc = new Fcfs_Sstf(itQueue);
 		}
-		else if(operation == 3 || operation == 4) {
+		else if(operation == SCAN || operation == CSCAN) {
 			dsFunc = new C_Scan(itQueue);
 		}
-		else if(operation == 5 || operation == 6) {
+		else if(operation == LOOK || operation == CLOOK) {
 			dsFunc = new C_Look(itQueue);
 		}
 		
-		if(operation == 1 || operation == 3 || operation == 5) {
+		if(operation == FCFS || operation == SCAN || operation == LOOK) {
 			dsFunc.first_scan_look();
 		}
-		else if(operation == 2 || operation == 4 || operation == 6) {
+		else if(operation == SSTF || operation == CSCAN || operation == CLOOK) {
 			dsFunc.shortest_cscan_clook();
 		}
 		

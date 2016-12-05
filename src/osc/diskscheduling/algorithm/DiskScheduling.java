@@ -2,6 +2,7 @@ package osc.diskscheduling.algorithm;
 
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.ListIterator;
 
 /**
  * Superclass for the disk scheduling algorithm.
@@ -12,7 +13,7 @@ import java.util.LinkedList;
 public abstract class DiskScheduling {
 	
 	protected LinkedList<Requests> requestQueue = new LinkedList<Requests>();
-	private Iterator<Requests> itReq;
+	private ListIterator<Requests> itReq;
 	
 	protected int head;
 	protected int tail;
@@ -47,7 +48,7 @@ public abstract class DiskScheduling {
 	/**
 	 * Shows the request queue. For debug purposes only
 	 */
-	protected void display() {
+	public void display() {
 		itReq = requestQueue.listIterator();
 		
 		System.out.print("[ ");
@@ -59,7 +60,7 @@ public abstract class DiskScheduling {
 	/**
 	 * Shows the seek difference of each request in the queue. For debug purposes only.
 	 */
-	protected void displaySeek() {
+	public void displaySeek() {
 		itReq = requestQueue.listIterator();
 		
 		System.out.print("[ ");
@@ -103,7 +104,7 @@ public abstract class DiskScheduling {
 	 */
 	public LinkedList<Integer> getRequestQueue() {
 		LinkedList<Integer> cylinderOnly = new LinkedList<Integer>();
-		itReq = requestQueue.iterator();
+		itReq = requestQueue.listIterator();
 		
 		while(itReq.hasNext()) {
 			cylinderOnly.add(new Integer(itReq.next().cylinder));

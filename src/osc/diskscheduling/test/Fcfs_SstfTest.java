@@ -1,4 +1,4 @@
-package osc.diskscheduling.algorithm;
+package osc.diskscheduling.test;
 
 import static org.junit.Assert.*;
 
@@ -6,6 +6,9 @@ import java.util.LinkedList;
 import java.util.ListIterator;
 
 import org.junit.Test;
+
+import osc.diskscheduling.algorithm.DiskScheduling;
+import osc.diskscheduling.algorithm.Fcfs_Sstf;
 
 public class Fcfs_SstfTest {
 	Integer[] arr = new Integer[] {50, 95, 180, 34, 119, 11, 123, 62, 64, 199};

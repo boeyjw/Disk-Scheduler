@@ -1,11 +1,14 @@
-package osc.diskscheduling.algorithm;
+package osc.diskscheduling.test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.LinkedList;
 import java.util.ListIterator;
 
 import org.junit.Test;
+
+import osc.diskscheduling.algorithm.C_Look;
+import osc.diskscheduling.algorithm.DiskScheduling;
 
 public class C_LookTest {
 	Integer[] arr = new Integer[] {50, 95, 180, 34, 119, 11, 123, 62, 64, 199};

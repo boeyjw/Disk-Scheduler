@@ -1,10 +1,12 @@
-package osc.diskscheduling.algorithm;
+package osc.diskscheduling.test;
 
 import static org.junit.Assert.*;
 
 import java.util.LinkedList;
 
 import org.junit.Test;
+
+import osc.diskscheduling.algorithm.ControllerBroker;
 
 public class ControllerBrokerTest {
 	private LinkedList<Integer> queue = new LinkedList<Integer>();

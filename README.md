@@ -2,7 +2,7 @@
 
 ##GUI
 
-##Algorithm
+##Algorithm (v1.0.2)
 
 - FCFS - Fully functional. Tested and verified.
 
