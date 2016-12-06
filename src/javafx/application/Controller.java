@@ -16,6 +16,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
@@ -56,9 +57,34 @@ public class Controller implements EventHandler<ActionEvent>{
 		private TextArea description_text;
 		@FXML
 		private Label customgraph_label;
+		@FXML
+		private Label fcfs_label;
+		@FXML
+		private Label sstf_label;
+		@FXML
+		private Label scan_label;
+		@FXML
+		private Label cscan_label;
+		@FXML
+		private Label look_label;
+		@FXML
+		private Label clook_label;
+		
 		//pane
 		@FXML
 		private Pane custom_pane;
+		@FXML
+		private Pane fcfs_pane;
+		@FXML
+		private Pane sstf_pane;
+		@FXML
+		private Pane scan_pane;
+		@FXML
+		private Pane cscan_pane;
+		@FXML
+		private Pane look_pane;
+		@FXML
+		private Pane clook_pane;
 
 		@FXML
 		private Pane customgraph_pane;
@@ -66,7 +92,6 @@ public class Controller implements EventHandler<ActionEvent>{
 		//parameters
 		private static String message="";
 		private static String message2="";
-		private static String des="";
 		private LinkedList<Integer> queue = new LinkedList<Integer>();
 		private int cylinder;
 		private int head; 
@@ -80,7 +105,13 @@ public class Controller implements EventHandler<ActionEvent>{
 	    private NumberAxis yAxis;
 	    @FXML
 	    private LineChart<String, Number> custom_linechart;
+	    
+	    //progress bar
+	    @FXML
+	    private ProgressBar load_bar;
+	    
 	    private static int seriesCounter = 0;
+	    private static int requestCount = 0;	    
 
         private ControllerBroker cbr = new ControllerBroker();
         private static LinkedList<LinkedList<XYChart.Series<String,Number>>> lsAlgorithm = new LinkedList<LinkedList<XYChart.Series<String,Number>>>(); 
@@ -94,31 +125,43 @@ public class Controller implements EventHandler<ActionEvent>{
 	    		temp = cbr.algorithmSelector(queue, ControllerBroker.FCFS);
 	    		graphingData(temp, "First Come First Serve");
 	    		addAlgorithmSeries(linechart);
+	    		fcfs_label.setText(temp.toString());
+	    		fcfs_pane.setVisible(true);
 	    	}
 	    	if(sstf.isSelected()==true){
 	    		temp = cbr.algorithmSelector(queue, ControllerBroker.SSTF);
 	    		graphingData(temp, "Shortest Seek Time First");
 	    		addAlgorithmSeries(linechart);
+	    		sstf_label.setText(temp.toString());
+				sstf_pane.setVisible(true);
 	    	}
 	    	if(scan.isSelected()==true){
 	    		temp = cbr.algorithmSelector(queue, ControllerBroker.SCAN);
 	    		graphingData(temp, "Scan");
 	    		addAlgorithmSeries(linechart);
+	    		scan_label.setText(temp.toString());
+				scan_pane.setVisible(true);
 	    	}
 	    	if(cscan.isSelected()==true){
 	    		temp = cbr.algorithmSelector(queue, ControllerBroker.CSCAN);
 	    		graphingData(temp, "CScan");
 	    		addAlgorithmSeries(linechart);
+	    		cscan_label.setText(temp.toString());
+				cscan_pane.setVisible(true);
 	    	}
 	    	if(look.isSelected()==true){
 	    		temp = cbr.algorithmSelector(queue, ControllerBroker.LOOK);
 	    		graphingData(temp, "Look");
 	    		addAlgorithmSeries(linechart);
+	    		look_label.setText(temp.toString());
+				look_pane.setVisible(true);
 	    	}
 	    	if(clook.isSelected()==true){
 	    		temp = cbr.algorithmSelector(queue, ControllerBroker.CLOOK);
 	    		graphingData(temp, "CLook");
 	    		addAlgorithmSeries(linechart);
+	    		clook_label.setText(temp.toString());
+				clook_pane.setVisible(true);
 	    	}	  
 	    }
 	   
@@ -129,6 +172,12 @@ public class Controller implements EventHandler<ActionEvent>{
 	    		message="Kindly select at least 1 algorithm to run simulation."; 
 	    		errorMessage();
 	    	}
+	    }
+	    
+	    
+	    //display queue which is sorted by algorithm
+	    private LinkedList<Integer> algorithmQueue(LinkedList<Integer> temp){
+	    	return temp;
 	    }
 	    
 	    
@@ -147,9 +196,11 @@ public class Controller implements EventHandler<ActionEvent>{
 	    }
 	    
 	    
+	    //remove all nodes on graph
 	    private void clearGraph(){
 	    	custom_linechart.getData().clear();
 	    }
+	    
 	    
 	    //put resulting series for algorithm into a list and add data series to load linechart 
 	    private void addAlgorithmSeries(LineChart<String, Number> linechart){
@@ -158,14 +209,35 @@ public class Controller implements EventHandler<ActionEvent>{
 	    		linechart.getData().add(lsSeries.get(i));
 	    }
 
-
+	    
+	    //for printing description in text area
+	    private void printText(Object des){
+	    	description_text.setText(
+					"This is a simple disk scheduling simulator to compare the efficiency\n"
+					+ "of disk scheduling algorithms.\n\n" 
+					+ "Multiple selection for comparison is supported.\n\n"
+					+ "Reset All to clear all parameters.\n"
+					+ "Simulate to run simulation.\n"
+					+des
+					);	
+	    }
+	    
+	    
+		//display error dialogue	
+		public void errorMessage(){
+	        Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Error Dialog");
+			alert.setContentText(message+"\n"+message2);
+			alert.showAndWait();
+			reset();
+		}
+	    
 	    
 		//to clear all values to default (null)
 	    @FXML
 		public void reset(ActionEvent event) {
 			if(event.getSource() == reset && rflag==sflag){
 				rflag=-rflag;
-				int i = 0;
 
 				lsSeries.clear();
 				lsAlgorithm.clear();
@@ -176,6 +248,7 @@ public class Controller implements EventHandler<ActionEvent>{
 				jobreq.clear();
 				queue.clear();
 				seriesCounter = 0;
+				requestCount = 0;
 				
 				//customgraph_pane.setVisible(false);
 				
@@ -189,16 +262,42 @@ public class Controller implements EventHandler<ActionEvent>{
                 message="";
                 message2="";
                 
-				description_text.setText(
-						"This is a simple disk scheduling simulator to compare the efficiency\n"
-						+ "of disk scheduling algorithms.\n\n" 
-						+ "Multiple selection for comparison is supported.\n\n"
-						+ "Reset All to clear all parameters.\n"
-						+ "Simulate to run simulation.\n"
-						+des
-						);				
+				printText("");			
 			}	
 		}
+	    private void reset(){
+	    	lsSeries.clear();
+			lsAlgorithm.clear();
+			clearGraph();
+							
+			cylinderamount.clear();
+			currenthead.clear();
+			jobreq.clear();
+			queue.clear();
+			seriesCounter = 0;
+			requestCount = 0;
+			
+			//customgraph_pane.setVisible(false);
+			
+			fcfs.setSelected(false);
+			sstf.setSelected(false);
+			scan.setSelected(false);
+			cscan.setSelected(false);
+			look.setSelected(false);
+			clook.setSelected(false);
+			
+			fcfs_pane.setVisible(false);
+			sstf_pane.setVisible(false);
+			scan_pane.setVisible(false);
+			cscan_pane.setVisible(false);
+			look_pane.setVisible(false);
+			clook_pane.setVisible(false);
+			
+            message="";
+            message2="";
+            
+			printText("");	
+	    }
 	    
 	    
 		//to pass parameters and run simulation
@@ -211,37 +310,32 @@ public class Controller implements EventHandler<ActionEvent>{
 	        		cylinder = Integer.parseInt(cylinderamount.getText());
 					head = Integer.parseInt(currenthead.getText());
 	        		for(String temp:jobreq.getText().replaceAll("\\s+", "").split(","))
-		        		queue.add(Integer.parseInt(temp));	
+	        			queue.add(Integer.parseInt(temp));
+	        		requestCheck();
 	        		algorithmOptions(custom_linechart);	
-	        		customgraph_label.setText("Custom Load"+queue);
 					customgraph_pane.setVisible(true);
+					printText("Kindly reset before new simulation.");
+					customgraph_label.setText("Custom Queue: "+" [ "+jobreq.getText()+" ] ");
+					
 				}					
         	}catch(NumberFormatException e){
         		message="Please make sure all text input is in integer.\nJob request must be filled and must only contain integers separated by comma.";
         		errorMessage();
         	}
 		}
+	    
+	    private void requestCheck(){
+	    	if(cylinder<requestCount){
+	    		message="Kindly make sure the Job Requests does not exceed Total No. of Cylinder.";
+	    		errorMessage();
+	    	}
+	    }
 		
-		//display error dialogue	
-		public void errorMessage(){
-	        Alert alert = new Alert(AlertType.ERROR);
-			alert.setTitle("Error Dialog");
-			alert.setContentText(message+"\n"+message2);
-			alert.showAndWait();
 
-			//customgraph_pane.setVisible(false);
-			
-			//flush message
-			message="";
-			message2="";
-		}
-		
-		
-		//make set no. of cylinder,current head and job request queue visible
 		@Override
-		public void handle(ActionEvent event) {
-    		custom_pane.setVisible(true);	
+		public void handle(ActionEvent arg0) {
+			// TODO Auto-generated method stub
+			
 		}
-		
 		
 }
