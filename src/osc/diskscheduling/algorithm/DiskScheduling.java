@@ -55,12 +55,12 @@ public abstract class DiskScheduling {
 	}
 	
 	/**
-	 * Shows the seek difference of each request in the queue. For debug purposes only.
+	 * Shows the seek time of each request in the queue. For debug purposes only.
 	 */
-	public void displaySeek() {
+	public void displaySeekTime() {
 		System.out.print("[ ");
 		for(int i = 0; i < requestQueue.size(); i++)
-			System.out.print(requestQueue.get(i).getSeekDiff() + " ");
+			System.out.print(requestQueue.get(i).getSeekTime() + " ");
 		System.out.println("]");
 	}
 	
@@ -68,10 +68,10 @@ public abstract class DiskScheduling {
 	 * Set seek time sequentially.
 	 * All seek time are unsigned.
 	 */
-	protected void absoluteSetSeek() {
-		requestQueue.get(0).setSeekDiff(Math.abs(head - requestQueue.get(0).cylinder));
+	protected void absoluteSetSeekTime() {
+		requestQueue.get(0).setSeekTime(Math.abs(head - requestQueue.get(0).cylinder));
 		for(int i = 1; i < requestQueue.size(); i++) {
-			requestQueue.get(i).setSeekDiff(Math.abs(requestQueue.get(i).cylinder - requestQueue.get(i - 1).cylinder));
+			requestQueue.get(i).setSeekTime(Math.abs(requestQueue.get(i).cylinder - requestQueue.get(i - 1).cylinder));
 		}
 	}
 	
@@ -80,11 +80,11 @@ public abstract class DiskScheduling {
 	 * This method is directly used for FCFS algorithm.
 	 * @return The total seek time
 	 */
-	private int totalSeek() {
+	private int totalSeekTime() {
 		int seekSum = 0;
 		
 		for(int i = 0; i < requestQueue.size(); i++) {
-			seekSum += requestQueue.get(i).getSeekDiff();
+			seekSum += requestQueue.get(i).getSeekTime();
 		}
 		
 		return seekSum;
@@ -105,7 +105,7 @@ public abstract class DiskScheduling {
 		
 		cylinderOnly.push(new Integer(head));
 		cylinderOnly.push(new Integer(tail));
-		cylinderOnly.push(new Integer(totalSeek()));
+		cylinderOnly.push(new Integer(totalSeekTime()));
 				
 		return cylinderOnly;
 	}

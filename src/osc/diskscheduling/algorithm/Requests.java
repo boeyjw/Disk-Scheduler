@@ -8,7 +8,7 @@ package osc.diskscheduling.algorithm;
  */
 public class Requests {
 	public int cylinder;
-	private int seekDiff;
+	private int seekTime;
 	
 	/**
 	 * Constructor for scheduling algorithm that cannot compute disk head seek time without additional steps.
@@ -17,14 +17,14 @@ public class Requests {
 	 */
 	public Requests(int cylinder) {
 		this.cylinder = cylinder;
-		this.setSeekDiff(0);
+		this.setSeekTime(0);
 	}
 
-	public int getSeekDiff() {
-		return seekDiff;
+	public int getSeekTime() {
+		return seekTime;
 	}
 
-	public void setSeekDiff(int seekDiff) {
-		this.seekDiff = seekDiff;
+	public void setSeekTime(int seekDiff) {
+		this.seekTime = seekDiff;
 	}
 }

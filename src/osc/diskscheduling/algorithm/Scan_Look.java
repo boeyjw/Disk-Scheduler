@@ -57,12 +57,12 @@ public abstract class Scan_Look extends DiskScheduling {
 	 */
 	private void headSetSeekSigned() {
 		for(int i = 0; i < requestQueue.size(); i++) {
-			requestQueue.get(i).setSeekDiff(head - requestQueue.get(i).cylinder);
+			requestQueue.get(i).setSeekTime(head - requestQueue.get(i).cylinder);
 		}
 		requestQueue.sort(new Comparator<Requests>() {
 			@Override
 			public int compare(Requests o1, Requests o2) {
-				return (o1.getSeekDiff() < o2.getSeekDiff() ) ? 1 : -1;
+				return (o1.getSeekTime() < o2.getSeekTime() ) ? 1 : -1;
 			}
 		});
 	}
@@ -74,7 +74,7 @@ public abstract class Scan_Look extends DiskScheduling {
 		int addIndex = 0; //Request insertion pointer.
 		 
 		for(int i = 0; i < requestQueue.size(); i++) {
-			if(requestQueue.get(i).getSeekDiff() > 0) {
+			if(requestQueue.get(i).getSeekTime() > 0) {
 				requestQueue.add(addIndex++, requestQueue.remove(i));
 			}
 			else {
@@ -83,7 +83,7 @@ public abstract class Scan_Look extends DiskScheduling {
 		}
 		
 		for(int i = addIndex - 1; i >= 0; i--) {
-			requestQueue.get(i).setSeekDiff(head - requestQueue.get(i).cylinder);
+			requestQueue.get(i).setSeekTime(head - requestQueue.get(i).cylinder);
 		}
 		
 		mergeSort(0, addIndex - 1, true);
@@ -96,7 +96,7 @@ public abstract class Scan_Look extends DiskScheduling {
 		int addIndex = 0; //Request insertion pointer.
 		 
 		for(int i = 0; i < requestQueue.size(); i++) {
-			if(requestQueue.get(i).getSeekDiff() < 0) {
+			if(requestQueue.get(i).getSeekTime() < 0) {
 				requestQueue.add(addIndex++, requestQueue.remove(i));
 			}
 			else {
@@ -120,13 +120,13 @@ public abstract class Scan_Look extends DiskScheduling {
 		
 		if(isAsc) { //Sort in ascending order?
 			while(n1 <= m && n2 <= r) {
-				arr[i++] = (requestQueue.get(n1).getSeekDiff() <= requestQueue.get(n2).getSeekDiff()) ? //Sort in ascending
+				arr[i++] = (requestQueue.get(n1).getSeekTime() <= requestQueue.get(n2).getSeekTime()) ? //Sort in ascending
 						requestQueue.get(n1++) : requestQueue.get(n2++);
 			}
 		}
 		else {
 			while(n1 <= m && n2 <= r) {
-				arr[i++] = (requestQueue.get(n1).getSeekDiff() >= requestQueue.get(n2).getSeekDiff()) ? //Sort in descending
+				arr[i++] = (requestQueue.get(n1).getSeekTime() >= requestQueue.get(n2).getSeekTime()) ? //Sort in descending
 						requestQueue.get(n1++) : requestQueue.get(n2++);
 			}
 		}

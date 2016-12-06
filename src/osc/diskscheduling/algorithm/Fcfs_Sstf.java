@@ -20,7 +20,7 @@ public class Fcfs_Sstf extends DiskScheduling {
 	 */
 	@Override
 	public void first_scan_look() {
-		absoluteSetSeek();
+		absoluteSetSeekTime();
 	}
 	
 	/**
@@ -31,11 +31,11 @@ public class Fcfs_Sstf extends DiskScheduling {
 	@Override
 	public void shortest_cscan_clook() {
 		/*
-		 * Calculate the seek difference between the disk head and every request then
+		 * Calculate the seek time between the disk head and every request then
 		 * sorts them in ascending order.
 		 */
 		for(int i = 0; i < requestQueue.size(); i++) {
-			requestQueue.get(i).setSeekDiff(Math.abs(head - requestQueue.get(i).cylinder));
+			requestQueue.get(i).setSeekTime(Math.abs(head - requestQueue.get(i).cylinder));
 		}
 		
 		/*
@@ -44,10 +44,10 @@ public class Fcfs_Sstf extends DiskScheduling {
 		requestQueue.sort(new Comparator<Requests>() {
 			@Override
 			public int compare(Requests o1, Requests o2) {
-				return (o1.getSeekDiff() < o2.getSeekDiff()) ? -1 : 1;
+				return (o1.getSeekTime() < o2.getSeekTime()) ? -1 : 1;
 			}
 		});
 		
-		absoluteSetSeek();
+		absoluteSetSeekTime();
 	}
 }

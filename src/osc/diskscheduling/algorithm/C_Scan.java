@@ -29,7 +29,7 @@ public class C_Scan extends Scan_Look {
 			mergeSort(displacementCounter, requestQueue.size() - 1, true);
 		}
 		
-		absoluteSetSeek();
+		absoluteSetSeekTime();
 	}
 	
 	/**
@@ -39,16 +39,16 @@ public class C_Scan extends Scan_Look {
 	public void shortest_cscan_clook() {
 		cscan_clook_default();
 		requestQueue.add(displacementCounter, new Requests(tail));
-		absoluteSetSeek();
+		absoluteSetSeekTime();
 		//Makes a jump from innermost track to outermost track, thus inserts outermost track into requests queue 
 		requestQueue.add(++displacementCounter, new Requests(0));
 		
 		/*
-		 * Calculate seek difference after the jump.
-		 * All seek difference value are guaranteed to be unsigned.
+		 * Calculate seek time after the jump.
+		 * All seek time value are guaranteed to be unsigned.
 		 */
 		for(int i = displacementCounter + 1; i < requestQueue.size(); i++) {
-			requestQueue.get(i).setSeekDiff(requestQueue.get(i - 1).cylinder - requestQueue.get(i).cylinder);
+			requestQueue.get(i).setSeekTime(requestQueue.get(i - 1).cylinder - requestQueue.get(i).cylinder);
 		}
 	}
 }
