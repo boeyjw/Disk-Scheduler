@@ -1,8 +1,8 @@
 package osc.diskscheduling.algorithm;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.ListIterator;
 
 /**
  * Superclass for the disk scheduling algorithm.
@@ -12,8 +12,7 @@ import java.util.ListIterator;
  */
 public abstract class DiskScheduling {
 	
-	protected LinkedList<Requests> requestQueue = new LinkedList<Requests>();
-	private ListIterator<Requests> itReq;
+	protected ArrayList<Requests> requestQueue = new ArrayList<Requests>();
 	
 	protected int head;
 	protected int tail;
@@ -29,8 +28,8 @@ public abstract class DiskScheduling {
 		while(itQueue.hasNext()) {
 			requestQueue.add(new Requests(itQueue.next().intValue()));
 		}
-		head = requestQueue.removeFirst().cylinder;
-		tail = requestQueue.removeLast().cylinder;
+		head = requestQueue.remove(0).cylinder;
+		tail = requestQueue.remove(requestQueue.size() - 1).cylinder;
 	}
 	
 	/**
@@ -49,11 +48,9 @@ public abstract class DiskScheduling {
 	 * Shows the request queue. For debug purposes only
 	 */
 	public void display() {
-		itReq = requestQueue.listIterator();
-		
 		System.out.print("[ ");
-		while(itReq.hasNext())
-			System.out.print(itReq.next().cylinder + " ");
+		for(int i = 0; i < requestQueue.size(); i++)
+			System.out.print(requestQueue.get(i).cylinder + " ");
 		System.out.println("]");
 	}
 	
@@ -61,12 +58,21 @@ public abstract class DiskScheduling {
 	 * Shows the seek difference of each request in the queue. For debug purposes only.
 	 */
 	public void displaySeek() {
-		itReq = requestQueue.listIterator();
-		
 		System.out.print("[ ");
-		while(itReq.hasNext())
-			System.out.print(itReq.next().getSeekDiff() + " ");
+		for(int i = 0; i < requestQueue.size(); i++)
+			System.out.print(requestQueue.get(i).getSeekDiff() + " ");
 		System.out.println("]");
+	}
+	
+	/**
+	 * Set seek time sequentially.
+	 * All seek time are unsigned.
+	 */
+	protected void absoluteSetSeek() {
+		requestQueue.get(0).setSeekDiff(Math.abs(head - requestQueue.get(0).cylinder));
+		for(int i = 1; i < requestQueue.size(); i++) {
+			requestQueue.get(i).setSeekDiff(Math.abs(requestQueue.get(i).cylinder - requestQueue.get(i - 1).cylinder));
+		}
 	}
 	
 	/**
@@ -75,25 +81,13 @@ public abstract class DiskScheduling {
 	 * @return The total seek time
 	 */
 	private int totalSeek() {
-		itReq = requestQueue.listIterator();
 		int seekSum = 0;
 		
-		while(itReq.hasNext()) {
-			seekSum += itReq.next().getSeekDiff();
+		for(int i = 0; i < requestQueue.size(); i++) {
+			seekSum += requestQueue.get(i).getSeekDiff();
 		}
 		
 		return seekSum;
-	}
-	
-	/**
-	 * Set seek time sequentially.
-	 * All seek time are unsigned.
-	 */
-	protected void absoluteSetSeek() {
-		requestQueue.getFirst().setSeekDiff(Math.abs(head - requestQueue.getFirst().cylinder));
-		for(int i = 1; i < requestQueue.size(); i++) {
-			requestQueue.get(i).setSeekDiff(Math.abs(requestQueue.get(i).cylinder - requestQueue.get(i - 1).cylinder));
-		}
 	}
 	
 	/**
@@ -104,10 +98,9 @@ public abstract class DiskScheduling {
 	 */
 	public LinkedList<Integer> getRequestQueue() {
 		LinkedList<Integer> cylinderOnly = new LinkedList<Integer>();
-		itReq = requestQueue.listIterator();
 		
-		while(itReq.hasNext()) {
-			cylinderOnly.add(new Integer(itReq.next().cylinder));
+		for(int i = 0; i < requestQueue.size(); i++) {
+			cylinderOnly.add(new Integer(requestQueue.get(i).cylinder));
 		}
 		
 		cylinderOnly.push(new Integer(head));
@@ -116,6 +109,7 @@ public abstract class DiskScheduling {
 				
 		return cylinderOnly;
 	}
+	
 
 	/**
 	 * MergeSort algorithm for disk scheduling algorithm which has ascending or descending pattern
