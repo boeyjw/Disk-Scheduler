@@ -85,6 +85,8 @@ public class Controller implements EventHandler<ActionEvent>{
 		private Pane look_pane;
 		@FXML
 		private Pane clook_pane;
+		@FXML
+		private Pane load_pane;
 
 		@FXML
 		private Pane customgraph_pane;
@@ -185,6 +187,8 @@ public class Controller implements EventHandler<ActionEvent>{
 	    private void graphingData(LinkedList<Integer> tmp, String operation) {
 	    	char i = '0';
 	    	ListIterator<Integer> itTmp = tmp.listIterator();
+	    	itTmp.next();
+	    	itTmp.next();
 	    	
 	    	lsSeries.add(new XYChart.Series<String,Number>());
 	    	lsSeries.get(seriesCounter).setName(operation);
@@ -259,6 +263,13 @@ public class Controller implements EventHandler<ActionEvent>{
 				look.setSelected(false);
 				clook.setSelected(false);
 				
+				fcfs_pane.setVisible(false);
+				sstf_pane.setVisible(false);
+				scan_pane.setVisible(false);
+				cscan_pane.setVisible(false);
+				look_pane.setVisible(false);
+				clook_pane.setVisible(false);
+				
                 message="";
                 message2="";
                 
@@ -309,14 +320,15 @@ public class Controller implements EventHandler<ActionEvent>{
 					algorithmOptionCheck();	
 	        		cylinder = Integer.parseInt(cylinderamount.getText());
 					head = Integer.parseInt(currenthead.getText());
+					queue.add(head);
 	        		for(String temp:jobreq.getText().replaceAll("\\s+", "").split(","))
 	        			queue.add(Integer.parseInt(temp));
+	        		queue.add(cylinder);
 	        		requestCheck();
 	        		algorithmOptions(custom_linechart);	
 					customgraph_pane.setVisible(true);
 					printText("Kindly reset before new simulation.");
-					customgraph_label.setText("Custom Queue: "+" [ "+jobreq.getText()+" ] ");
-					
+					customgraph_label.setText("Custom Queue: "+" [ "+jobreq.getText()+" ] ");	
 				}					
         	}catch(NumberFormatException e){
         		message="Please make sure all text input is in integer.\nJob request must be filled and must only contain integers separated by comma.";
