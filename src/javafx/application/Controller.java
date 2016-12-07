@@ -1,11 +1,15 @@
 package javafx.application;
 
+import java.net.URL;
 import java.util.LinkedList;
 import java.util.ListIterator;
+import java.util.ResourceBundle;
 
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
@@ -15,16 +19,23 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.Pane;
 
 import osc.diskscheduling.algorithm.ControllerBroker;
 
 
-public class Controller implements EventHandler<ActionEvent>{
+/**
+ * @author CHIA
+ *
+ */
+public class Controller implements Initializable {// implements EventHandler<ActionEvent>{
 
 		//buttons
 		@FXML 
@@ -51,6 +62,9 @@ public class Controller implements EventHandler<ActionEvent>{
 		private CheckBox look;
 		@FXML
 		private CheckBox clook;
+		@FXML
+		private ComboBox<String> load_combo;
+		
 		
 		//text 
 		@FXML
@@ -119,7 +133,39 @@ public class Controller implements EventHandler<ActionEvent>{
         private static LinkedList<LinkedList<XYChart.Series<String,Number>>> lsAlgorithm = new LinkedList<LinkedList<XYChart.Series<String,Number>>>(); 
 	    private LinkedList<XYChart.Series<String,Number>> lsSeries = new LinkedList<XYChart.Series<String,Number>>();
 		
+	    
+		@Override
+		public void initialize(URL location, ResourceBundle resources) {
+			load_combo.setItems(FXCollections.observableArrayList("Light","Medium","Heavy","Custom"));
+			load_combo.setValue("Pick a load type");			
+		}
+		
+		@FXML
+		private void load(){
+			String loadType = load_combo.getValue();
+			if(loadType.compareTo("Light") == 0){
+				cylinderamount.setText("199");
+	    		currenthead.setText("50");
+	    		jobreq.setText("42,36,76,98,80,72,52,40,32,12");
+			}else if(loadType.compareTo("Medium") == 0){
+				cylinderamount.setText("999");
+	    		currenthead.setText("500");
+	    		jobreq.setText("421,125,624,524,125,32,125,324,698,203,421,698,825,421");
+			}else if(loadType.compareTo("Heavy") == 0){
+				cylinderamount.setText("999");
+	    		currenthead.setText("500");
+	    		jobreq.setText("987,123,896,214,987,123,998,2,875,365,993,2,785,12,987,56,865,12,998,123");
+			}else if(loadType.compareTo("Custom") == 0){
+				cylinderamount.clear();
+				currenthead.clear();
+				jobreq.clear();
+			}else{
+				message="Kindly select a load type";
+				errorMessage();
+			}
+		}
 
+	    
 	    //handle input algorithm option
 	    private void algorithmOptions(LineChart<String, Number> linechart){
 	    	LinkedList<Integer> temp = new LinkedList<Integer>();
@@ -239,8 +285,8 @@ public class Controller implements EventHandler<ActionEvent>{
 	    
 		//to clear all values to default (null)
 	    @FXML
-		public void reset(ActionEvent event) {
-			if(event.getSource() == reset && rflag==sflag){
+		public void reset() {
+			if(rflag==sflag){
 				rflag=-rflag;
 
 				lsSeries.clear();
@@ -269,51 +315,18 @@ public class Controller implements EventHandler<ActionEvent>{
 				cscan_pane.setVisible(false);
 				look_pane.setVisible(false);
 				clook_pane.setVisible(false);
-				
+								
                 message="";
                 message2="";
                 
 				printText("");			
 			}	
 		}
-	    private void reset(){
-	    	lsSeries.clear();
-			lsAlgorithm.clear();
-			clearGraph();
-							
-			cylinderamount.clear();
-			currenthead.clear();
-			jobreq.clear();
-			queue.clear();
-			seriesCounter = 0;
-			requestCount = 0;
-			
-			//customgraph_pane.setVisible(false);
-			
-			fcfs.setSelected(false);
-			sstf.setSelected(false);
-			scan.setSelected(false);
-			cscan.setSelected(false);
-			look.setSelected(false);
-			clook.setSelected(false);
-			
-			fcfs_pane.setVisible(false);
-			sstf_pane.setVisible(false);
-			scan_pane.setVisible(false);
-			cscan_pane.setVisible(false);
-			look_pane.setVisible(false);
-			clook_pane.setVisible(false);
-			
-            message="";
-            message2="";
-            
-			printText("");	
-	    }
 	    
 	    
 		//to pass parameters and run simulation
 	    @FXML
-		public void simulate(ActionEvent event){
+		public void simulate(){
 	    	try{
 				if(rflag!=sflag){
 					sflag = -sflag;
@@ -321,10 +334,16 @@ public class Controller implements EventHandler<ActionEvent>{
 	        		cylinder = Integer.parseInt(cylinderamount.getText());
 					head = Integer.parseInt(currenthead.getText());
 					queue.add(head);
-	        		for(String temp:jobreq.getText().replaceAll("\\s+", "").split(","))
-	        			queue.add(Integer.parseInt(temp));
+	        		for(String temp:jobreq.getText().replaceAll("\\s+", "").split(",")){
+	        			int foo = Integer.parseInt(temp);
+	        			if(foo>cylinder || foo<0){
+	        				message="Job request not in range of cylinder";
+	        				errorMessage();
+	        			}
+	        			else
+	        				queue.add(Integer.parseInt(temp));
+	        			}
 	        		queue.add(cylinder);
-	        		requestCheck();
 	        		algorithmOptions(custom_linechart);	
 					customgraph_pane.setVisible(true);
 					printText("Kindly reset before new simulation.");
@@ -336,18 +355,5 @@ public class Controller implements EventHandler<ActionEvent>{
         	}
 		}
 	    
-	    private void requestCheck(){
-	    	if(cylinder<requestCount){
-	    		message="Kindly make sure the Job Requests does not exceed Total No. of Cylinder.";
-	    		errorMessage();
-	    	}
-	    }
-		
-
-		@Override
-		public void handle(ActionEvent arg0) {
-			// TODO Auto-generated method stub
-			
-		}
 		
 }
