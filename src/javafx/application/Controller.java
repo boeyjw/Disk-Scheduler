@@ -1,6 +1,7 @@
 package javafx.application;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.ListIterator;
@@ -19,7 +20,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
@@ -97,7 +97,11 @@ public class Controller implements Initializable {
 		@FXML
 		private TextArea look_textqueue;
 		@FXML
-		private TextArea clook_textqueue;	
+		private TextArea clook_textqueue;
+		@FXML
+		private Label column_header_algol;
+		@FXML
+		private Label column_header_queue;
 		
 		//graph
 		@FXML
@@ -120,7 +124,7 @@ public class Controller implements Initializable {
 	    private static int seriesCounter = 0; 
 
         private ControllerBroker cbr = new ControllerBroker();
-	    private LinkedList<XYChart.Series<Integer, Integer>> lsSeries = new LinkedList<XYChart.Series<Integer, Integer>>();
+	    private ArrayList<XYChart.Series<Integer, Integer>> lsSeries = new ArrayList<XYChart.Series<Integer, Integer>>(6);
 		
 	    
 		@Override
@@ -164,9 +168,9 @@ public class Controller implements Initializable {
 				cylinderamount.setEditable(false);
 				currenthead.setEditable(false);
 				jobreq.setEditable(false);
-				cylinderamount.setText("199");
-	    		currenthead.setText("50");
-	    		jobreq.setText("42,36,76,98,80,72,52,40,32,12");
+				cylinderamount.setText("999");
+	    		currenthead.setText("500");
+	    		jobreq.setText("524,468,560,532,442,490,564,580,602");
 			}else if(loadType.compareTo("Medium") == 0){
 				cylinderamount.setEditable(false);
 				currenthead.setEditable(false);
@@ -269,6 +273,8 @@ public class Controller implements Initializable {
 	    		}
 	    		desc_label.setText("Algorithm information");
 	    		description_text.setText(desc_algolSeekText);
+	    		column_header_algol.setVisible(true);
+				column_header_queue.setVisible(true);
 	    	}
 	    }
 	    
@@ -375,40 +381,44 @@ public class Controller implements Initializable {
 			cscan_textqueue.setVisible(false);
 			look_textqueue.setVisible(false);
 			clook_textqueue.setVisible(false);
+			
+			column_header_algol.setVisible(false);
+			column_header_queue.setVisible(false);
 	    }
 	    
 		//to pass parameters and run simulation
 	    @FXML
 		public void simulate(){
-	    	boolean isInvalid = false;
 	    	try{
 	    			grid_pane.setVisible(true);
 					resetInternal();
 	    			algorithmOptionCheck();	
 	        		cylinder = Integer.parseInt(cylinderamount.getText().trim());
 					head = Integer.parseInt(currenthead.getText().trim());
-					if(head > cylinder) {
-						isInvalid = true;
+					if(head > cylinder || cylinder < 0) {
+						message="Total number of cylinder must be non-zero and current head must be less than total number of cylinder";
+						errorMessage();
 					}
 					else {
+						boolean isInvalid = false;
 						queue.add(head);
+						for(String temp:jobreq.getText().replaceAll("\\s+", "").split(",")){
+		        			int foo = Integer.parseInt(temp);
+		        			if(foo>cylinder || foo<0){
+		        				message="Job request not in range of cylinder or current head is more than total number of cylinder";
+		        				errorMessage();
+		        				isInvalid = true;
+		        				break;
+		        			}
+		        			else
+		        				queue.add(Integer.parseInt(temp));
+		        		}
+						if(!isInvalid) {
+							queue.add(cylinder);
+		        			algorithmOptions();	
+							customgraph_pane.setVisible(true);
+						}
 					}
-	        		for(String temp:jobreq.getText().replaceAll("\\s+", "").split(",")){
-	        			int foo = Integer.parseInt(temp);
-	        			if(foo>cylinder || foo<0 || isInvalid){
-	        				message="Job request not in range of cylinder or current head is more than total number of cylinder";
-	        				errorMessage();
-	        				isInvalid = true;
-	        				break;
-	        			}
-	        			else
-	        				queue.add(Integer.parseInt(temp));
-	        		}
-	        		queue.add(cylinder);
-	        		if(!isInvalid) {
-	        			algorithmOptions();	
-						customgraph_pane.setVisible(true);	
-	        		}
         	}catch(NumberFormatException e){
         		message="Please make sure all text input is in integer.\nJob request must be filled and must only contain integers separated by comma.";
         		errorMessage();
