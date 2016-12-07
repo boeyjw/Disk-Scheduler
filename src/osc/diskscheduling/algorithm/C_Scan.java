@@ -39,16 +39,10 @@ public class C_Scan extends Scan_Look {
 	public void shortest_cscan_clook() {
 		cscan_clook_default();
 		requestQueue.add(displacementCounter, new Requests(tail));
-		absoluteSetSeekTime();
 		//Makes a jump from innermost track to outermost track, thus inserts outermost track into requests queue 
 		requestQueue.add(++displacementCounter, new Requests(0));
-		
-		/*
-		 * Calculate seek time after the jump.
-		 * All seek time value are guaranteed to be unsigned.
-		 */
-		for(int i = displacementCounter + 1; i < requestQueue.size(); i++) {
-			requestQueue.get(i).setSeekTime(requestQueue.get(i - 1).cylinder - requestQueue.get(i).cylinder);
-		}
+		absoluteSetSeekTime();
+		//The jump from outermost cylinder to innermost cylinder seek time is not calculated
+		requestQueue.get(displacementCounter).setSeekTime(0);
 	}
 }
