@@ -128,7 +128,7 @@
                                        <children>
                                           <LineChart fx:id="custom_linechart" layoutX="35.0" layoutY="42.0" prefHeight="518.0" prefWidth="768.0">
                                              <xAxis>
-                                                <CategoryAxis side="BOTTOM" />
+                                                <NumberAxis side="BOTTOM" />
                                              </xAxis>
                                              <yAxis>
                                                 <NumberAxis side="LEFT" />

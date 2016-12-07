@@ -115,12 +115,8 @@ public class Controller implements Initializable {// implements EventHandler<Act
 		private static int sflag=-1;
 		
 		//graph
-        @FXML
-	    private CategoryAxis xAxis;
 	    @FXML
-	    private NumberAxis yAxis;
-	    @FXML
-	    private LineChart<String, Number> custom_linechart;
+	    private LineChart<Integer, Integer> custom_linechart;
 	    
 	    //progress bar
 	    @FXML
@@ -130,8 +126,7 @@ public class Controller implements Initializable {// implements EventHandler<Act
 	    private static int requestCount = 0;	    
 
         private ControllerBroker cbr = new ControllerBroker();
-        private static LinkedList<LinkedList<XYChart.Series<String,Number>>> lsAlgorithm = new LinkedList<LinkedList<XYChart.Series<String,Number>>>(); 
-	    private LinkedList<XYChart.Series<String,Number>> lsSeries = new LinkedList<XYChart.Series<String,Number>>();
+	    private LinkedList<XYChart.Series<Integer, Integer>> lsSeries = new LinkedList<XYChart.Series<Integer, Integer>>();
 		
 	    
 		@Override
@@ -167,50 +162,54 @@ public class Controller implements Initializable {// implements EventHandler<Act
 
 	    
 	    //handle input algorithm option
-	    private void algorithmOptions(LineChart<String, Number> linechart){
+	    private void algorithmOptions(){
 	    	LinkedList<Integer> temp = new LinkedList<Integer>();
+	    	boolean anySelected = false;
 	    	if(fcfs.isSelected()==true){
 	    		temp = cbr.algorithmSelector(queue, ControllerBroker.FCFS);
 	    		graphingData(temp, "First Come First Serve");
-	    		addAlgorithmSeries(linechart);
 	    		fcfs_label.setText(temp.toString());
 	    		fcfs_pane.setVisible(true);
+	    		anySelected = true;
 	    	}
 	    	if(sstf.isSelected()==true){
 	    		temp = cbr.algorithmSelector(queue, ControllerBroker.SSTF);
 	    		graphingData(temp, "Shortest Seek Time First");
-	    		addAlgorithmSeries(linechart);
 	    		sstf_label.setText(temp.toString());
 				sstf_pane.setVisible(true);
+				anySelected = true;
 	    	}
 	    	if(scan.isSelected()==true){
 	    		temp = cbr.algorithmSelector(queue, ControllerBroker.SCAN);
 	    		graphingData(temp, "Scan");
-	    		addAlgorithmSeries(linechart);
 	    		scan_label.setText(temp.toString());
 				scan_pane.setVisible(true);
+				anySelected = true;
 	    	}
 	    	if(cscan.isSelected()==true){
 	    		temp = cbr.algorithmSelector(queue, ControllerBroker.CSCAN);
 	    		graphingData(temp, "CScan");
-	    		addAlgorithmSeries(linechart);
 	    		cscan_label.setText(temp.toString());
 				cscan_pane.setVisible(true);
+				anySelected = true;
 	    	}
 	    	if(look.isSelected()==true){
 	    		temp = cbr.algorithmSelector(queue, ControllerBroker.LOOK);
 	    		graphingData(temp, "Look");
-	    		addAlgorithmSeries(linechart);
 	    		look_label.setText(temp.toString());
 				look_pane.setVisible(true);
+				anySelected = true;
 	    	}
 	    	if(clook.isSelected()==true){
 	    		temp = cbr.algorithmSelector(queue, ControllerBroker.CLOOK);
 	    		graphingData(temp, "CLook");
-	    		addAlgorithmSeries(linechart);
 	    		clook_label.setText(temp.toString());
 				clook_pane.setVisible(true);
-	    	}	  
+				anySelected = true;
+	    	}
+	    	if(anySelected==true){
+	    		addAlgorithmSeries();
+	    	}
 	    }
 	   
 	    
@@ -231,32 +230,24 @@ public class Controller implements Initializable {// implements EventHandler<Act
 	    
 	    //to put the data nodes into a series 
 	    private void graphingData(LinkedList<Integer> tmp, String operation) {
-	    	char i = '0';
+	    	int i = 0;
 	    	ListIterator<Integer> itTmp = tmp.listIterator();
 	    	itTmp.next();
 	    	itTmp.next();
 	    	
-	    	lsSeries.add(new XYChart.Series<String,Number>());
+	    	lsSeries.add(new XYChart.Series<Integer, Integer>());
 	    	lsSeries.get(seriesCounter).setName(operation);
 	    	while(itTmp.hasNext()) {
-	    		lsSeries.get(seriesCounter).getData().add(new Data<String, Number>(String.valueOf(i), itTmp.next()));
-	    		i += 1;
+	    		lsSeries.get(seriesCounter).getData().add(new Data<Integer, Integer>(i++, itTmp.next()));
 	    	}
 	    	seriesCounter++;
 	    }
 	    
 	    
-	    //remove all nodes on graph
-	    private void clearGraph(){
-	    	custom_linechart.getData().clear();
-	    }
-	    
-	    
 	    //put resulting series for algorithm into a list and add data series to load linechart 
-	    private void addAlgorithmSeries(LineChart<String, Number> linechart){
-	    	lsAlgorithm.add(lsSeries);
+	    private void addAlgorithmSeries(){
 	    	for(int i = 0; i < seriesCounter; i++)
-	    		linechart.getData().add(lsSeries.get(i));
+	    		custom_linechart.getData().add(lsSeries.get(i));
 	    }
 
 	    
@@ -290,8 +281,7 @@ public class Controller implements Initializable {// implements EventHandler<Act
 				rflag=-rflag;
 
 				lsSeries.clear();
-				lsAlgorithm.clear();
-				clearGraph();
+				custom_linechart.getData().clear();
 								
 				cylinderamount.clear();
 				currenthead.clear();
@@ -344,10 +334,10 @@ public class Controller implements Initializable {// implements EventHandler<Act
 	        				queue.add(Integer.parseInt(temp));
 	        			}
 	        		queue.add(cylinder);
-	        		algorithmOptions(custom_linechart);	
+	        		algorithmOptions();	
 					customgraph_pane.setVisible(true);
 					printText("Kindly reset before new simulation.");
-					customgraph_label.setText("Custom Queue: "+" [ "+jobreq.getText()+" ] ");	
+					//customgraph_label.setText("Custom Queue: "+" [ "+jobreq.getText()+" ] ");	
 				}					
         	}catch(NumberFormatException e){
         		message="Please make sure all text input is in integer.\nJob request must be filled and must only contain integers separated by comma.";
