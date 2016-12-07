@@ -6,14 +6,16 @@
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
@@ -25,7 +27,7 @@
                <children>
                   <SplitPane fx:id="leftsplith_pane" dividerPositions="0.5963302752293578" orientation="VERTICAL" prefHeight="839.0" prefWidth="474.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <items>
-                      <AnchorPane fx:id="leftup_pane" minHeight="0.0" minWidth="0.0" prefHeight="595.0" prefWidth="535.0">
+                      <AnchorPane fx:id="leftup_pane" minHeight="0.0" minWidth="0.0" prefHeight="516.0" prefWidth="495.0">
                            <children>
                               <Label fx:id="main_label" layoutX="23.0" layoutY="14.0" text="Input">
                                  <font>
@@ -103,14 +105,14 @@
                                  </tooltip></Button>
                            </children>
                         </AnchorPane>
-                      <AnchorPane fx:id="leftdown_pane" minHeight="0.0" minWidth="0.0" prefHeight="304.0" prefWidth="472.0">
+                      <AnchorPane fx:id="leftdown_pane" minHeight="0.0" minWidth="0.0" prefHeight="471.0" prefWidth="495.0">
                            <children>
                               <Label fx:id="desc_label" layoutX="14.0" layoutY="14.0" text="Description">
                                  <font>
                                     <Font size="32.0" />
                                  </font>
                               </Label>
-                              <TextArea fx:id="description_text" editable="false" layoutX="14.0" layoutY="61.0" prefHeight="220.0" prefWidth="468.0" text="This is a simple disk scheduling simulator to compare the efficiency &#10;of disk scheduling algorithms. &#10;&#10;Multiple selection for comparison is supported.&#10;&#10;Reset All to clear all parameters.&#10;Simulate to run simulation." />
+                              <TextArea fx:id="description_text" editable="false" layoutX="14.0" layoutY="61.0" prefHeight="299.0" prefWidth="468.0" text="This is a simple disk scheduling simulator to compare the efficiency &#10;of disk scheduling algorithms. &#10;&#10;Multiple selection for comparison is supported.&#10;&#10;Reset All to clear all parameters.&#10;Simulate to run simulation." />
                            </children>
                         </AnchorPane>
                     </items>
@@ -121,7 +123,7 @@
                <children>
                   <ScrollPane fx:id="rightscroll_pane" layoutX="-14.0" prefHeight="984.0" prefWidth="935.0" AnchorPane.bottomAnchor="4.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <content>
-                      <AnchorPane fx:id="rscroll_pane" minHeight="0.0" minWidth="0.0" prefHeight="2960.0" prefWidth="934.0">
+                      <AnchorPane fx:id="rscroll_pane" minHeight="0.0" minWidth="0.0" prefHeight="768.0" prefWidth="1366.0">
                            <children>
                               <VBox fx:id="vbox" layoutY="72.0" prefHeight="2883.0" prefWidth="919.0">
                                  <children>
@@ -137,55 +139,34 @@
                                           </LineChart>
                                        </children>
                                     </Pane>
-                                    <Pane prefHeight="360.0" prefWidth="919.0">
+                                    <GridPane fx:id="grid_pane" prefHeight="276.0" prefWidth="919.0">
+                                      <columnConstraints>
+                                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="455.0" minWidth="10.0" prefWidth="58.0" />
+                                        <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="906.0" minWidth="10.0" prefWidth="861.0" />
+                                      </columnConstraints>
+                                      <rowConstraints>
+                                        <RowConstraints maxHeight="60.0" minHeight="10.0" prefHeight="43.0" vgrow="SOMETIMES" />
+                                        <RowConstraints maxHeight="60.0" minHeight="10.0" prefHeight="45.0" vgrow="SOMETIMES" />
+                                        <RowConstraints maxHeight="60.0" minHeight="10.0" prefHeight="45.0" vgrow="SOMETIMES" />
+                                          <RowConstraints maxHeight="60.0" minHeight="10.0" prefHeight="45.0" vgrow="SOMETIMES" />
+                                          <RowConstraints maxHeight="60.0" minHeight="10.0" prefHeight="45.0" vgrow="SOMETIMES" />
+                                          <RowConstraints maxHeight="60.0" minHeight="0.0" prefHeight="45.0" vgrow="SOMETIMES" />
+                                      </rowConstraints>
                                        <children>
-                                          <Pane fx:id="fcfs_pane" layoutX="86.0" layoutY="2.0" prefHeight="35.0" prefWidth="758.0">
-                                             <children>
-                                                <Label fx:id="fcfsqueue_label" text="FCFS Queue :" />
-                                                <Label fx:id="fcfs_label" layoutX="137.0" prefHeight="17.0" prefWidth="596.0" text="Label" />
-                                             </children>
-                                          </Pane>
-                                          <Pane fx:id="sstf_pane" layoutX="85.0" layoutY="24.0" prefHeight="35.0" prefWidth="760.0">
-                                             <children>
-                                                <Label fx:id="sstfqueue_label" text="SSTF Queue :" />
-                                                <Label fx:id="sstf_label" layoutX="138.0" prefHeight="17.0" prefWidth="594.0" text="Label" />
-                                             </children>
-                                          </Pane>
-                                          <Pane fx:id="scan_pane" layoutX="86.0" layoutY="46.0" prefHeight="30.0" prefWidth="753.0">
-                                             <children>
-                                                <Label fx:id="scanqueue_label" text="SCAN Queue :" />
-                                                <Label fx:id="scan_label" layoutX="137.0" prefHeight="21.0" prefWidth="599.0" text="Label" />
-                                             </children>
-                                          </Pane>
-                                          <Pane fx:id="cscan_pane" layoutX="85.0" layoutY="65.0" prefHeight="35.0" prefWidth="759.0">
-                                             <children>
-                                                <Label fx:id="cscanqueue_label" text="CSCAN Queue :" />
-                                                <Label fx:id="cscan_label" layoutX="138.0" prefHeight="17.0" prefWidth="595.0" text="Label" />
-                                             </children>
-                                          </Pane>
-                                          <Pane fx:id="look_pane" layoutX="85.0" layoutY="86.0" prefHeight="35.0" prefWidth="757.0">
-                                             <children>
-                                                <Label fx:id="lookqueue_label" text="LOOK Queue :" />
-                                                <Label fx:id="look_label" layoutX="138.0" prefHeight="17.0" prefWidth="601.0" text="Label" />
-                                             </children>
-                                          </Pane>
-                                          <Pane fx:id="clook_pane" layoutX="85.0" layoutY="109.0" prefHeight="35.0" prefWidth="771.0">
-                                             <children>
-                                                <Label fx:id="lcookqueue_label" text="CLOOK Queue :" />
-                                                <Label fx:id="clook_label" layoutX="138.0" prefHeight="17.0" prefWidth="595.0" text="Label" />
-                                             </children>
-                                          </Pane>
-                                          <Pane fx:id="load_pane" layoutX="66.0" layoutY="141.0" prefHeight="78.0" prefWidth="652.0">
-                                             <children>
-                                                <ProgressBar fx:id="load_bar" layoutX="137.0" layoutY="17.0" prefHeight="23.0" prefWidth="442.0" progress="0.0" />
-                                                <Label layoutX="23.0" layoutY="7.0" prefHeight="41.0" prefWidth="121.0" text="Load :" />
-                                                <Label layoutX="563.0" layoutY="49.0" text="High" />
-                                                <Label layoutX="330.0" layoutY="48.0" text="Medium" />
-                                                <Label layoutX="122.0" layoutY="48.0" text="Low" />
-                                             </children>
-                                          </Pane>
+                                          <Label fx:id="fcfs_label" text="FCFS" />
+                                          <Label fx:id="sstf_label" text="SSTF" GridPane.rowIndex="1" />
+                                          <Label fx:id="scan_label" text="Scan" GridPane.rowIndex="2" />
+                                          <Label fx:id="cscan_label" text="CScan" GridPane.rowIndex="3" />
+                                          <Label fx:id="look_label" text="Look" GridPane.rowIndex="4" />
+                                          <Label fx:id="clook_label" text="CLook" GridPane.rowIndex="5" />
+                                          <TextArea fx:id="fcfs_textqueue" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" />
+                                          <TextArea fx:id="sstf_textqueue" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                          <TextArea fx:id="scan_textqueue" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                          <TextArea fx:id="cscan_textqueue" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                          <TextArea fx:id="look_textqueue" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                          <TextArea fx:id="clook_textqueue" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                                        </children>
-                                    </Pane>
+                                    </GridPane>
                                  </children></VBox>
                               <Label fx:id="graph_label" layoutX="32.0" layoutY="20.0" text="Graph">
                                  <font>
