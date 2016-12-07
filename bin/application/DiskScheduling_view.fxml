@@ -16,7 +16,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.chart.NumberAxis?>
 
-<AnchorPane fx:id="base_pane" prefHeight="769.0" prefWidth="1365.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafx.application.Controller">
+<AnchorPane fx:id="base_pane" prefHeight="981.0" prefWidth="1365.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafx.application.Controller">
    <children>
       <SplitPane fx:id="basesplit_pane" dividerPositions="0.3665644171779141" layoutX="8.0" layoutY="8.0" prefHeight="841.0" prefWidth="1306.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <items>
@@ -138,43 +138,43 @@
                                     </Pane>
                                     <Pane prefHeight="360.0" prefWidth="919.0">
                                        <children>
-                                          <Pane fx:id="fcfs_pane" layoutX="56.0" layoutY="22.0" prefHeight="35.0" prefWidth="755.0">
+                                          <Pane fx:id="fcfs_pane" layoutX="86.0" layoutY="2.0" prefHeight="35.0" prefWidth="758.0">
                                              <children>
                                                 <Label fx:id="fcfsqueue_label" text="FCFS Queue :" />
-                                                <Label fx:id="fcfs_label" layoutX="133.0" layoutY="2.0" text="Label" />
+                                                <Label fx:id="fcfs_label" layoutX="137.0" text="Label" />
                                              </children>
                                           </Pane>
-                                          <Pane fx:id="sstf_pane" layoutX="57.0" layoutY="55.0" prefHeight="35.0" prefWidth="757.0">
+                                          <Pane fx:id="sstf_pane" layoutX="85.0" layoutY="24.0" prefHeight="35.0" prefWidth="760.0">
                                              <children>
                                                 <Label fx:id="sstfqueue_label" text="SSTF Queue :" />
-                                                <Label fx:id="sstf_label" layoutX="134.0" layoutY="1.0" text="Label" />
+                                                <Label fx:id="sstf_label" layoutX="138.0" text="Label" />
                                              </children>
                                           </Pane>
-                                          <Pane fx:id="scan_pane" layoutX="57.0" layoutY="84.0" prefHeight="35.0" prefWidth="753.0">
+                                          <Pane fx:id="scan_pane" layoutX="86.0" layoutY="46.0" prefHeight="30.0" prefWidth="753.0">
                                              <children>
                                                 <Label fx:id="scanqueue_label" text="SCAN Queue :" />
-                                                <Label fx:id="scan_label" layoutX="132.0" layoutY="2.0" prefHeight="21.0" prefWidth="44.0" text="Label" />
+                                                <Label fx:id="scan_label" layoutX="137.0" prefHeight="21.0" prefWidth="44.0" text="Label" />
                                              </children>
                                           </Pane>
-                                          <Pane fx:id="cscan_pane" layoutX="56.0" layoutY="113.0" prefHeight="35.0" prefWidth="758.0">
+                                          <Pane fx:id="cscan_pane" layoutX="85.0" layoutY="65.0" prefHeight="35.0" prefWidth="759.0">
                                              <children>
                                                 <Label fx:id="cscanqueue_label" text="CSCAN Queue :" />
-                                                <Label fx:id="cscan_label" layoutX="137.0" layoutY="1.0" text="Label" />
+                                                <Label fx:id="cscan_label" layoutX="138.0" text="Label" />
                                              </children>
                                           </Pane>
-                                          <Pane fx:id="look_pane" layoutX="57.0" layoutY="140.0" prefHeight="35.0" prefWidth="757.0">
+                                          <Pane fx:id="look_pane" layoutX="85.0" layoutY="86.0" prefHeight="35.0" prefWidth="757.0">
                                              <children>
                                                 <Label fx:id="lookqueue_label" text="LOOK Queue :" />
-                                                <Label fx:id="look_label" layoutX="141.0" text="Label" />
+                                                <Label fx:id="look_label" layoutX="138.0" text="Label" />
                                              </children>
                                           </Pane>
-                                          <Pane fx:id="clook_pane" layoutX="59.0" layoutY="170.0" prefHeight="35.0" prefWidth="757.0">
+                                          <Pane fx:id="clook_pane" layoutX="85.0" layoutY="109.0" prefHeight="35.0" prefWidth="771.0">
                                              <children>
                                                 <Label fx:id="lcookqueue_label" text="CLOOK Queue :" />
-                                                <Label fx:id="clook_label" layoutX="144.0" layoutY="1.0" text="Label" />
+                                                <Label fx:id="clook_label" layoutX="138.0" text="Label" />
                                              </children>
                                           </Pane>
-                                          <Pane fx:id="load_pane" layoutX="68.0" layoutY="223.0" prefHeight="78.0" prefWidth="652.0">
+                                          <Pane fx:id="load_pane" layoutX="66.0" layoutY="141.0" prefHeight="78.0" prefWidth="652.0">
                                              <children>
                                                 <ProgressBar fx:id="load_bar" layoutX="137.0" layoutY="17.0" prefHeight="23.0" prefWidth="442.0" progress="0.0" />
                                                 <Label layoutX="23.0" layoutY="7.0" prefHeight="41.0" prefWidth="121.0" text="Load :" />

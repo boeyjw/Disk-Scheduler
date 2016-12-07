@@ -6,8 +6,6 @@ import java.util.ListIterator;
 import java.util.ResourceBundle;
 
 import javafx.collections.FXCollections;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.CategoryAxis;
@@ -22,10 +20,8 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
-import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.Pane;
 
 import osc.diskscheduling.algorithm.ControllerBroker;
@@ -35,7 +31,7 @@ import osc.diskscheduling.algorithm.ControllerBroker;
  * @author CHIA
  *
  */
-public class Controller implements Initializable {// implements EventHandler<ActionEvent>{
+public class Controller implements Initializable {
 
 		//buttons
 		@FXML 
@@ -69,8 +65,6 @@ public class Controller implements Initializable {// implements EventHandler<Act
 		//text 
 		@FXML
 		private TextArea description_text;
-		@FXML
-		private Label customgraph_label;
 		@FXML
 		private Label fcfs_label;
 		@FXML
@@ -286,20 +280,13 @@ public class Controller implements Initializable {// implements EventHandler<Act
 		//to clear all values to default (null)
 	    @FXML
 		public void reset() {
-			if(rflag==sflag){
-				rflag=-rflag;
 
-				lsSeries.clear();
-				lsAlgorithm.clear();
-				clearGraph();
+				resetInternal();
 								
 				cylinderamount.clear();
 				currenthead.clear();
 				jobreq.clear();
-				queue.clear();
-				seriesCounter = 0;
-				requestCount = 0;
-				
+								
 				//customgraph_pane.setVisible(false);
 				
 				fcfs.setSelected(false);
@@ -319,18 +306,24 @@ public class Controller implements Initializable {// implements EventHandler<Act
                 message="";
                 message2="";
                 
-				printText("");			
-			}	
+				printText("");	
 		}
 	    
+	    private void resetInternal(){
+	    	lsSeries.clear();
+			lsAlgorithm.clear();
+			clearGraph();
+			queue.clear();
+			seriesCounter = 0;
+			requestCount = 0;
+	    }
 	    
 		//to pass parameters and run simulation
 	    @FXML
 		public void simulate(){
 	    	try{
-				if(rflag!=sflag){
-					sflag = -sflag;
-					algorithmOptionCheck();	
+					resetInternal();
+	    			algorithmOptionCheck();	
 	        		cylinder = Integer.parseInt(cylinderamount.getText());
 					head = Integer.parseInt(currenthead.getText());
 					queue.add(head);
@@ -346,9 +339,7 @@ public class Controller implements Initializable {// implements EventHandler<Act
 	        		queue.add(cylinder);
 	        		algorithmOptions(custom_linechart);	
 					customgraph_pane.setVisible(true);
-					printText("Kindly reset before new simulation.");
-					customgraph_label.setText("Custom Queue: "+" [ "+jobreq.getText()+" ] ");	
-				}					
+					printText("Kindly reset before new simulation.");					
         	}catch(NumberFormatException e){
         		message="Please make sure all text input is in integer.\nJob request must be filled and must only contain integers separated by comma.";
         		errorMessage();
