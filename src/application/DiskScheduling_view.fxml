@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Button?>
@@ -19,9 +24,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="base_pane" prefHeight="981.0" prefWidth="1365.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafx.application.Controller">
+<AnchorPane fx:id="base_pane" prefHeight="960.0" prefWidth="1488.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafx.application.Controller">
    <children>
-      <SplitPane fx:id="basesplit_pane" dividerPositions="0.3665644171779141" layoutX="8.0" layoutY="8.0" prefHeight="841.0" prefWidth="1306.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <SplitPane fx:id="basesplit_pane" dividerPositions="0.3665644171779141" layoutX="8.0" layoutY="8.0" prefHeight="960.0" prefWidth="1486.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="0.0">
         <items>
           <AnchorPane fx:id="leftsplitv_pane" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
@@ -112,20 +117,20 @@
                                     <Font size="32.0" />
                                  </font>
                               </Label>
-                              <TextArea fx:id="description_text" editable="false" layoutX="14.0" layoutY="61.0" prefHeight="299.0" prefWidth="468.0" text="This is a simple disk scheduling simulator to compare the efficiency &#10;of disk scheduling algorithms. &#10;&#10;Multiple selection for comparison is supported.&#10;&#10;Reset All to clear all parameters.&#10;Simulate to run simulation." />
+                              <TextArea fx:id="description_text" editable="false" layoutX="14.0" layoutY="61.0" prefHeight="245.0" prefWidth="468.0" text="This is a simple disk scheduling simulator to compare the efficiency &#10;of disk scheduling algorithms. &#10;&#10;Multiple selection for comparison is supported.&#10;&#10;Reset All to clear all parameters.&#10;Simulate to run simulation." />
                            </children>
                         </AnchorPane>
                     </items>
                   </SplitPane>
                </children>
             </AnchorPane>
-          <AnchorPane fx:id="rightsplitv_pane" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+          <AnchorPane fx:id="rightsplitv_pane" minHeight="0.0" minWidth="0.0" prefHeight="958.0" prefWidth="880.0">
                <children>
-                  <ScrollPane fx:id="rightscroll_pane" layoutX="-14.0" prefHeight="984.0" prefWidth="935.0" AnchorPane.bottomAnchor="4.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <ScrollPane fx:id="rightscroll_pane" layoutX="-14.0" prefHeight="954.0" prefWidth="943.0" AnchorPane.bottomAnchor="4.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-7.0" AnchorPane.topAnchor="0.0">
                     <content>
-                      <AnchorPane fx:id="rscroll_pane" minHeight="0.0" minWidth="0.0" prefHeight="768.0" prefWidth="1366.0">
+                      <AnchorPane fx:id="rscroll_pane" minHeight="0.0" minWidth="0.0" prefHeight="948.0" prefWidth="934.0">
                            <children>
-                              <VBox fx:id="vbox" layoutY="72.0" prefHeight="2883.0" prefWidth="919.0">
+                              <VBox fx:id="vbox" layoutX="-10.0" layoutY="52.0" prefHeight="889.0" prefWidth="921.0">
                                  <children>
                                     <Pane fx:id="customgraph_pane" prefHeight="591.0" prefWidth="919.0" visible="true">
                                        <children>
@@ -139,7 +144,7 @@
                                           </LineChart>
                                        </children>
                                     </Pane>
-                                    <GridPane fx:id="grid_pane" prefHeight="276.0" prefWidth="919.0">
+                                    <GridPane fx:id="grid_pane" prefHeight="274.0" prefWidth="785.0">
                                       <columnConstraints>
                                         <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="455.0" minWidth="10.0" prefWidth="58.0" />
                                         <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="906.0" minWidth="10.0" prefWidth="861.0" />
@@ -167,7 +172,8 @@
                                           <TextArea fx:id="clook_textqueue" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                                        </children>
                                     </GridPane>
-                                 </children></VBox>
+                                 </children>
+                              </VBox>
                               <Label fx:id="graph_label" layoutX="32.0" layoutY="20.0" text="Graph">
                                  <font>
                                     <Font size="32.0" />
