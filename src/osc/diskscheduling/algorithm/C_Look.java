@@ -30,7 +30,7 @@ public class C_Look extends Scan_Look {
 	public void shortest_cscan_clook() {
 		cscan_clook_default();
 		absoluteSetSeekTime();
-		//The jump from innermost request to outermost track has no seek difference.
+		//The jump from outermost request to innermost request has no seek difference.
 		requestQueue.get(displacementCounter).setSeekTime(0);
 	}
 }

@@ -11,7 +11,8 @@ import osc.diskscheduling.algorithm.DiskScheduling;
 import osc.diskscheduling.algorithm.Fcfs_Sstf;
 
 public class Fcfs_SstfTest {
-	Integer[] arr = new Integer[] {50, 95, 180, 34, 119, 11, 123, 62, 64, 199};
+	//Integer[] arr = new Integer[] {50, 95, 180, 34, 119, 11, 123, 62, 64, 199};
+	Integer[] arr = new Integer[] {100,23,89,132,42,187,200};
 	ListIterator<Integer> ls;
 	DiskScheduling obj;
 	
@@ -43,9 +44,9 @@ public class Fcfs_SstfTest {
 		
 		obj.first_scan_look();
 		ls = obj.getRequestQueue().listIterator();
-		assertEquals(644, ls.next().intValue());
-		assertEquals(199, ls.next().intValue());
-		assertEquals(50, ls.next().intValue());
+		assertEquals(421, ls.next().intValue());
+		assertEquals(200, ls.next().intValue());
+		assertEquals(100, ls.next().intValue());
 				
 		System.out.print("Output queue: ");
 		obj.display();
@@ -61,12 +62,11 @@ public class Fcfs_SstfTest {
 		
 		obj.shortest_cscan_clook();
 		ls = obj.getRequestQueue().listIterator();
-		assertEquals(236, ls.next().intValue());
-		assertEquals(199, ls.next().intValue());
-		assertEquals(50, ls.next().intValue());
-		
 		System.out.print("Output queue: ");
 		obj.display();
+		assertEquals(273, ls.next().intValue());
+		assertEquals(200, ls.next().intValue());
+		assertEquals(100, ls.next().intValue());
 	}
 	
 	@Test
