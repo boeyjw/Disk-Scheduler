@@ -6,11 +6,8 @@ import java.util.ListIterator;
 import java.util.ResourceBundle;
 
 import javafx.collections.FXCollections;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
@@ -22,10 +19,8 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
-import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.Pane;
 
 import osc.diskscheduling.algorithm.ControllerBroker;
@@ -35,7 +30,7 @@ import osc.diskscheduling.algorithm.ControllerBroker;
  * @author CHIA
  *
  */
-public class Controller implements Initializable {// implements EventHandler<ActionEvent>{
+public class Controller implements Initializable {
 
 		//buttons
 		@FXML 
@@ -70,8 +65,6 @@ public class Controller implements Initializable {// implements EventHandler<Act
 		@FXML
 		private TextArea description_text;
 		@FXML
-		private Label customgraph_label;
-		@FXML
 		private Label fcfs_label;
 		@FXML
 		private Label sstf_label;
@@ -101,9 +94,14 @@ public class Controller implements Initializable {// implements EventHandler<Act
 		private Pane clook_pane;
 		@FXML
 		private Pane load_pane;
-
+		
+		//graph
 		@FXML
 		private Pane customgraph_pane;
+		@FXML
+		private NumberAxis xaxis;
+		@FXML
+		private NumberAxis yaxis;
 		
 		//parameters
 		private static String message="";
@@ -111,10 +109,7 @@ public class Controller implements Initializable {// implements EventHandler<Act
 		private LinkedList<Integer> queue = new LinkedList<Integer>();
 		private int cylinder;
 		private int head; 
-		private static int rflag=1;
-		private static int sflag=-1;
-		
-		//graph
+
 	    @FXML
 	    private LineChart<Integer, Integer> custom_linechart;
 	    
@@ -122,8 +117,7 @@ public class Controller implements Initializable {// implements EventHandler<Act
 	    @FXML
 	    private ProgressBar load_bar;
 	    
-	    private static int seriesCounter = 0;
-	    private static int requestCount = 0;	    
+	    private static int seriesCounter = 0; 
 
         private ControllerBroker cbr = new ControllerBroker();
 	    private LinkedList<XYChart.Series<Integer, Integer>> lsSeries = new LinkedList<XYChart.Series<Integer, Integer>>();
@@ -132,7 +126,17 @@ public class Controller implements Initializable {// implements EventHandler<Act
 		@Override
 		public void initialize(URL location, ResourceBundle resources) {
 			load_combo.setItems(FXCollections.observableArrayList("Light","Medium","Heavy","Custom"));
-			load_combo.setValue("Pick a load type");			
+			load_combo.setValue("Pick a load type (Default: Custom)");
+			
+			fcfs_pane.setVisible(false);
+			sstf_pane.setVisible(false);
+			scan_pane.setVisible(false);
+			cscan_pane.setVisible(false);
+			look_pane.setVisible(false);
+			clook_pane.setVisible(false);
+			
+			xaxis.setLabel("Request");
+			yaxis.setLabel("Cylinder");
 		}
 		
 		@FXML
@@ -154,20 +158,19 @@ public class Controller implements Initializable {// implements EventHandler<Act
 				cylinderamount.clear();
 				currenthead.clear();
 				jobreq.clear();
-			}else{
-				message="Kindly select a load type";
-				errorMessage();
 			}
 		}
 
 	    
-	    //handle input algorithm option
+		//handle input algorithm option
 	    private void algorithmOptions(){
 	    	LinkedList<Integer> temp = new LinkedList<Integer>();
 	    	boolean anySelected = false;
 	    	if(fcfs.isSelected()==true){
 	    		temp = cbr.algorithmSelector(queue, ControllerBroker.FCFS);
 	    		graphingData(temp, "First Come First Serve");
+	    		temp.pop();
+	    		temp.pop();
 	    		fcfs_label.setText(temp.toString());
 	    		fcfs_pane.setVisible(true);
 	    		anySelected = true;
@@ -175,6 +178,8 @@ public class Controller implements Initializable {// implements EventHandler<Act
 	    	if(sstf.isSelected()==true){
 	    		temp = cbr.algorithmSelector(queue, ControllerBroker.SSTF);
 	    		graphingData(temp, "Shortest Seek Time First");
+	    		temp.pop();
+	    		temp.pop();
 	    		sstf_label.setText(temp.toString());
 				sstf_pane.setVisible(true);
 				anySelected = true;
@@ -182,6 +187,8 @@ public class Controller implements Initializable {// implements EventHandler<Act
 	    	if(scan.isSelected()==true){
 	    		temp = cbr.algorithmSelector(queue, ControllerBroker.SCAN);
 	    		graphingData(temp, "Scan");
+	    		temp.pop();
+	    		temp.pop();
 	    		scan_label.setText(temp.toString());
 				scan_pane.setVisible(true);
 				anySelected = true;
@@ -189,6 +196,8 @@ public class Controller implements Initializable {// implements EventHandler<Act
 	    	if(cscan.isSelected()==true){
 	    		temp = cbr.algorithmSelector(queue, ControllerBroker.CSCAN);
 	    		graphingData(temp, "CScan");
+	    		temp.pop();
+	    		temp.pop();
 	    		cscan_label.setText(temp.toString());
 				cscan_pane.setVisible(true);
 				anySelected = true;
@@ -196,6 +205,8 @@ public class Controller implements Initializable {// implements EventHandler<Act
 	    	if(look.isSelected()==true){
 	    		temp = cbr.algorithmSelector(queue, ControllerBroker.LOOK);
 	    		graphingData(temp, "Look");
+	    		temp.pop();
+	    		temp.pop();
 	    		look_label.setText(temp.toString());
 				look_pane.setVisible(true);
 				anySelected = true;
@@ -203,6 +214,8 @@ public class Controller implements Initializable {// implements EventHandler<Act
 	    	if(clook.isSelected()==true){
 	    		temp = cbr.algorithmSelector(queue, ControllerBroker.CLOOK);
 	    		graphingData(temp, "CLook");
+	    		temp.pop();
+	    		temp.pop();
 	    		clook_label.setText(temp.toString());
 				clook_pane.setVisible(true);
 				anySelected = true;
@@ -211,7 +224,6 @@ public class Controller implements Initializable {// implements EventHandler<Act
 	    		addAlgorithmSeries();
 	    	}
 	    }
-	   
 	    
 	    //check if any algorithm is selected, display error message if none selected
 	    private void algorithmOptionCheck(){
@@ -219,14 +231,7 @@ public class Controller implements Initializable {// implements EventHandler<Act
 	    		message="Kindly select at least 1 algorithm to run simulation."; 
 	    		errorMessage();
 	    	}
-	    }
-	    
-	    
-	    //display queue which is sorted by algorithm
-	    private LinkedList<Integer> algorithmQueue(LinkedList<Integer> temp){
-	    	return temp;
-	    }
-	    
+	    }	    
 	    
 	    //to put the data nodes into a series 
 	    private void graphingData(LinkedList<Integer> tmp, String operation) {
@@ -235,14 +240,13 @@ public class Controller implements Initializable {// implements EventHandler<Act
 	    	itTmp.next();
 	    	itTmp.next();
 	    	
-	    	lsSeries.add(new XYChart.Series<Integer, Integer>());
+	    	lsSeries.add(new XYChart.Series<Integer,Integer>());
 	    	lsSeries.get(seriesCounter).setName(operation);
 	    	while(itTmp.hasNext()) {
-	    		lsSeries.get(seriesCounter).getData().add(new Data<Integer, Integer>(i++, itTmp.next()));
+	    		lsSeries.get(seriesCounter).getData().add(new Data<Integer,Integer>(i++, itTmp.next()));
 	    	}
 	    	seriesCounter++;
 	    }
-	    
 	    
 	    //put resulting series for algorithm into a list and add data series to load linechart 
 	    private void addAlgorithmSeries(){
@@ -277,19 +281,13 @@ public class Controller implements Initializable {// implements EventHandler<Act
 		//to clear all values to default (null)
 	    @FXML
 		public void reset() {
-			if(rflag==sflag){
-				rflag=-rflag;
 
-				lsSeries.clear();
-				custom_linechart.getData().clear();
+				resetInternal();
 								
 				cylinderamount.clear();
 				currenthead.clear();
 				jobreq.clear();
-				queue.clear();
-				seriesCounter = 0;
-				requestCount = 0;
-				
+								
 				//customgraph_pane.setVisible(false);
 				
 				fcfs.setSelected(false);
@@ -298,31 +296,36 @@ public class Controller implements Initializable {// implements EventHandler<Act
 				cscan.setSelected(false);
 				look.setSelected(false);
 				clook.setSelected(false);
-				
-				fcfs_pane.setVisible(false);
-				sstf_pane.setVisible(false);
-				scan_pane.setVisible(false);
-				cscan_pane.setVisible(false);
-				look_pane.setVisible(false);
-				clook_pane.setVisible(false);
 								
                 message="";
                 message2="";
                 
-				printText("");			
-			}	
+				printText("");
+				load_combo.setValue("Pick a load type");
 		}
 	    
+	    private void resetInternal(){
+	    	lsSeries.clear();
+			custom_linechart.getData().clear();
+			queue.clear();
+			seriesCounter = 0;
+			
+			fcfs_pane.setVisible(false);
+			sstf_pane.setVisible(false);
+			scan_pane.setVisible(false);
+			cscan_pane.setVisible(false);
+			look_pane.setVisible(false);
+			clook_pane.setVisible(false);
+	    }
 	    
 		//to pass parameters and run simulation
 	    @FXML
 		public void simulate(){
 	    	try{
-				if(rflag!=sflag){
-					sflag = -sflag;
-					algorithmOptionCheck();	
-	        		cylinder = Integer.parseInt(cylinderamount.getText());
-					head = Integer.parseInt(currenthead.getText());
+					resetInternal();
+	    			algorithmOptionCheck();	
+	        		cylinder = Integer.parseInt(cylinderamount.getText().trim());
+					head = Integer.parseInt(currenthead.getText().trim());
 					queue.add(head);
 	        		for(String temp:jobreq.getText().replaceAll("\\s+", "").split(",")){
 	        			int foo = Integer.parseInt(temp);
@@ -336,14 +339,10 @@ public class Controller implements Initializable {// implements EventHandler<Act
 	        		queue.add(cylinder);
 	        		algorithmOptions();	
 					customgraph_pane.setVisible(true);
-					printText("Kindly reset before new simulation.");
-					//customgraph_label.setText("Custom Queue: "+" [ "+jobreq.getText()+" ] ");	
-				}					
+					printText("Kindly reset before new simulation.");					
         	}catch(NumberFormatException e){
         		message="Please make sure all text input is in integer.\nJob request must be filled and must only contain integers separated by comma.";
         		errorMessage();
         	}
 		}
-	    
-		
 }

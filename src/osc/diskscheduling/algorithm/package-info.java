@@ -8,7 +8,7 @@
  * The GUI coding only requires to instantiate {@link osc.diskscheduling.algorithm.ControllerBroker} 
  * and call the method {@link osc.diskscheduling.algorithm.ControllerBroker#algorithmSelector(java.util.LinkedList, int)}.
  * @author Boey Jian Wen (014545) & Chia Kim Kim (014616)
- * @version 1.0.4
+ * @version 1.0.5
  *
  */
 package osc.diskscheduling.algorithm;

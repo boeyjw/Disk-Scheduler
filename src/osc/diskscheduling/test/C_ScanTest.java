@@ -11,7 +11,7 @@ import osc.diskscheduling.algorithm.C_Scan;
 import osc.diskscheduling.algorithm.DiskScheduling;
 
 public class C_ScanTest {
-	Integer[] arr = new Integer[] {50, 95, 180, 34, 119, 11, 123, 62, 64, 199};
+	Integer[] arr = new Integer[] {500,987,123,896,214,987,123,998,2,875,365,993,2,785,12,987,56,865,12,998,123,999};
 	ListIterator<Integer> ls;
 	DiskScheduling obj;
 	
