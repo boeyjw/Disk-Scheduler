@@ -45,7 +45,10 @@
                                           </Label>
                                           <TextField fx:id="cylinderamount" layoutX="165.0" layoutY="12.0" prefHeight="31.0" prefWidth="261.0" promptText="Enter integer here">
                                              <tooltip>
-                                                <Tooltip text="Total number of cylinder on a disk." />
+                                                <Tooltip text="Total number of cylinder on a disk. The first cylinder is 0.">
+                                                   <font>
+                                                      <Font size="14.0" />
+                                                   </font></Tooltip>
                                              </tooltip>
                                           </TextField>
                                        </children>
@@ -58,7 +61,10 @@
                                              </tooltip></Label>
                                           <TextField fx:id="currenthead" layoutX="164.0" layoutY="8.0" prefHeight="31.0" prefWidth="261.0" promptText="Enter integer here">
                                              <tooltip>
-                                                <Tooltip text="The cylinder where the head is currently." />
+                                                <Tooltip text="The cylinder where the head is currently.">
+                                                   <font>
+                                                      <Font size="14.0" />
+                                                   </font></Tooltip>
                                              </tooltip></TextField>
                                        </children>
                                     </Pane>
@@ -71,7 +77,10 @@
                                           </Label>
                                           <TextField fx:id="jobreq" layoutX="163.0" prefHeight="31.0" prefWidth="261.0" promptText="Enter integer separated by comma">
                                              <tooltip>
-                                                <Tooltip text="The job request queue in the cylinder." />
+                                                <Tooltip text="The job request queue in the cylinder.">
+                                                   <font>
+                                                      <Font size="14.0" />
+                                                   </font></Tooltip>
                                              </tooltip>
                                           </TextField>
                                        </children>
@@ -103,6 +112,8 @@
                                  <tooltip>
                                     <Tooltip text="Run simulation to display graph(s)." />
                                  </tooltip></Button>
+                              <Label fx:id="input_queuelabel" layoutX="47.0" layoutY="455.0" styleClass="enlargeLabel" stylesheets="@DiskScheduling_style.css" text="Input Queue:" />
+                              <TextArea fx:id="input_queuetext" layoutX="50.0" layoutY="472.0" prefHeight="91.0" prefWidth="468.0" styleClass="enlargeText" stylesheets="@DiskScheduling_style.css" />
                            </children>
                         </AnchorPane>
                       <AnchorPane fx:id="leftdown_pane" minHeight="0.0" minWidth="0.0" prefHeight="471.0" prefWidth="495.0">

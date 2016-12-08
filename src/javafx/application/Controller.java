@@ -24,6 +24,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 
@@ -71,6 +72,12 @@ public class Controller implements Initializable {
 	@FXML
 	private TextArea description_text;
 
+	//Input queue display
+	@FXML
+	private Label input_queuelabel;
+	@FXML
+	private TextArea input_queuetext;
+	
 	//modified queue show text area
 	@FXML
 	private GridPane grid_pane;
@@ -161,6 +168,11 @@ public class Controller implements Initializable {
 		cscan_textqueue.setEditable(false);
 		look_textqueue.setEditable(false);
 		clook_textqueue.setEditable(false);
+		
+		input_queuelabel.setVisible(false);
+		input_queuetext.setVisible(false);
+		input_queuetext.setEditable(false);
+		input_queuetext.setWrapText(true);
 	}
 
 	@FXML
@@ -368,6 +380,11 @@ public class Controller implements Initializable {
 
 		desc_label.setText("Description");
 		load_combo.setValue(load_message);
+		
+		input_queuelabel.setVisible(false);
+		input_queuetext.setVisible(false);
+		input_queuetext.clear();
+		
 		printText("");
 	}
 
@@ -427,6 +444,15 @@ public class Controller implements Initializable {
 					queue.add(cylinder);
 					algorithmOptions();	
 					customgraph_pane.setVisible(true);
+					input_queuelabel.setVisible(true);
+					input_queuetext.setVisible(true);
+					input_queuetext.setText(queue.toString() + "\n" + "Initial disk head position: " + queue.getFirst() + "\n" + "Total number of cylinders: " + (queue.getLast() + 1));
+					input_queuetext.setTooltip(new Tooltip("The last element in the queue is the total number of cylinders. This is how the program read your input."));
+				}
+				else {
+					input_queuelabel.setVisible(true);
+					input_queuetext.setVisible(true);
+					input_queuetext.setText("Invalid queue input!");
 				}
 			}
 		}catch(NumberFormatException e){
