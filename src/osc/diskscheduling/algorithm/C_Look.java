@@ -19,7 +19,12 @@ public class C_Look extends Scan_Look {
 	@Override
 	public void first_scan_look() {
 		scan_look_default();
-		mergeSort(displacementCounter, requestQueue.size() - 1, true);
+		if(isInner) { //The head sweep inwards toward the spindle.
+			mergeSort(displacementCounter, requestQueue.size() - 1, false);
+		}
+		else { //The head sweep outwards toward the end of the disk platter.
+			mergeSort(displacementCounter, requestQueue.size() - 1, true);
+		}
 		absoluteSetSeekTime();
 	}
 	

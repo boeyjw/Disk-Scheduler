@@ -1,11 +1,6 @@
-# dsksch
+# dsksch [v1.0.1]
 
-##GUI
-- Requires work:
-*Change label to text area.
-*Show disk load and total seek time.
-
-##Algorithm (v1.0.5)
+##Algorithm
 
 - FCFS - Fully functional. Tested and verified.
 
