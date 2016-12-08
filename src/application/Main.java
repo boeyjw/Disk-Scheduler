@@ -7,7 +7,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 
-
+/**
+ * The main class to load FXML interface and the application icon.
+ * @author Boey Jian Wen (014545) & Chia Kim Kim (014616)
+ *
+ */
 public class Main extends Application{
 		
 	@Override

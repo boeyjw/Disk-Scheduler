@@ -32,7 +32,9 @@ import osc.diskscheduling.algorithm.ControllerBroker;
 
 
 /**
- * @author CHIA
+ * This is the class that hooks the interface to the Model logic.
+ * Any functions in the interface are executed here.
+ * @author Boey Jian Wen (014545) & Chia Kim Kim (014616)
  *
  */
 public class Controller implements Initializable {
@@ -119,35 +121,41 @@ public class Controller implements Initializable {
 	private NumberAxis xaxis;
 	@FXML
 	private NumberAxis yaxis;
-
-	//parameters
-	private static String message="";
-	private static String message2="";
-	private static final String load_message="Pick a load type (Default: Custom)";
-	private LinkedList<Integer> queue = new LinkedList<Integer>();
-	private int cylinder;
-	private int head; 
-
 	@FXML
 	private LineChart<Integer, Integer> custom_linechart;
 	private static int seriesCounter = 0; 
 
+	//parameters
+	private String message="";
+	private String message2="";
+	private static final String load_message="Pick a load type (Default: Custom)";
+	private LinkedList<Integer> queue = new LinkedList<Integer>();
+	private int cylinder;
+	private int head;
+	
+	//Program local field
 	private ControllerBroker cbr = new ControllerBroker();
 	private ArrayList<XYChart.Series<Integer, Integer>> lsSeries = new ArrayList<XYChart.Series<Integer, Integer>>(6);
 
-
+	
+	/**
+	 * Interface factory default view.
+	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		load_combo.setItems(FXCollections.observableArrayList("Light","Medium","Heavy","Custom"));
 		load_combo.setValue(load_message);
-
+		
+		//The description TextArea is not for use
 		description_text.setEditable(false);
-
+		
+		//Set the graph x-axis and y-axis labels
 		xaxis.setLabel("Request");
 		yaxis.setLabel("Cylinder");
-
+		
+		//The processed queue information is not visible because there is no input at launch
 		grid_pane.setVisible(false);
-
+		
 		fcfs_label.setVisible(false);
 		sstf_label.setVisible(false);
 		scan_label.setVisible(false);
@@ -161,7 +169,8 @@ public class Controller implements Initializable {
 		cscan_textqueue.setVisible(false);
 		look_textqueue.setVisible(false);
 		clook_textqueue.setVisible(false);
-
+		
+		//The processed queue information is not for use
 		fcfs_textqueue.setEditable(false);
 		sstf_textqueue.setEditable(false);
 		scan_textqueue.setEditable(false);
@@ -169,12 +178,16 @@ public class Controller implements Initializable {
 		look_textqueue.setEditable(false);
 		clook_textqueue.setEditable(false);
 		
+		//The input queue display is not for use and is not visible until a valid queue is entered
 		input_queuelabel.setVisible(false);
 		input_queuetext.setVisible(false);
 		input_queuetext.setEditable(false);
 		input_queuetext.setWrapText(true);
 	}
-
+	
+	/**
+	 * Correspond to the load ComboBox. Executes every time a load is changed. 
+	 */
 	@FXML
 	private void load(){
 		String loadType = load_combo.getValue();
@@ -210,14 +223,17 @@ public class Controller implements Initializable {
 	}
 
 
-	//handle input algorithm option
+	/**
+	 * Handles input algorithm methods. Sequential access in the order of FCFS, SSTF, Scan, CScan, Look, CLook
+	 */
 	private void algorithmOptions(){
 		LinkedList<Integer> temp = new LinkedList<Integer>();
 		int[] totalSeekTime = new int[6];
 		String[] descShowAlgolSeek = new String[] {"FCFS", "SSTF", "Scan", "CScan", "Look", "CLook"};
 		Arrays.fill(totalSeekTime, -1);
 		boolean anySelected = false;
-		if(fcfs.isSelected()==true){
+		
+		if(fcfs.isSelected()){
 			temp = cbr.algorithmSelector(queue, ControllerBroker.FCFS);
 			graphingData(temp, "First Come First Serve");
 			totalSeekTime[0] = temp.pop().intValue();
@@ -227,7 +243,7 @@ public class Controller implements Initializable {
 			fcfs_textqueue.setText(temp.toString());
 			anySelected = true;
 		}
-		if(sstf.isSelected()==true){
+		if(sstf.isSelected()){
 			temp = cbr.algorithmSelector(queue, ControllerBroker.SSTF);
 			graphingData(temp, "Shortest Seek Time First");
 			totalSeekTime[1] = temp.pop().intValue();
@@ -237,7 +253,7 @@ public class Controller implements Initializable {
 			sstf_textqueue.setText(temp.toString());
 			anySelected = true;
 		}
-		if(scan.isSelected()==true){
+		if(scan.isSelected()){
 			temp = cbr.algorithmSelector(queue, ControllerBroker.SCAN);
 			graphingData(temp, "Scan");
 			totalSeekTime[2] = temp.pop().intValue();
@@ -247,7 +263,7 @@ public class Controller implements Initializable {
 			scan_textqueue.setText(temp.toString());
 			anySelected = true;
 		}
-		if(cscan.isSelected()==true){
+		if(cscan.isSelected()){
 			temp = cbr.algorithmSelector(queue, ControllerBroker.CSCAN);
 			graphingData(temp, "CScan");
 			totalSeekTime[3] = temp.pop().intValue();
@@ -257,7 +273,7 @@ public class Controller implements Initializable {
 			cscan_textqueue.setText(temp.toString());
 			anySelected = true;
 		}
-		if(look.isSelected()==true){
+		if(look.isSelected()){
 			temp = cbr.algorithmSelector(queue, ControllerBroker.LOOK);
 			graphingData(temp, "Look");
 			totalSeekTime[4] = temp.pop().intValue();
@@ -267,7 +283,7 @@ public class Controller implements Initializable {
 			look_textqueue.setText(temp.toString());
 			anySelected = true;
 		}
-		if(clook.isSelected()==true){
+		if(clook.isSelected()){
 			temp = cbr.algorithmSelector(queue, ControllerBroker.CLOOK);
 			graphingData(temp, "CLook");
 			totalSeekTime[5] = temp.pop().intValue();
@@ -277,7 +293,7 @@ public class Controller implements Initializable {
 			clook_textqueue.setText(temp.toString());
 			anySelected = true;
 		}
-		if(anySelected==true){
+		if(anySelected){
 			addAlgorithmSeries();
 			String desc_algolSeekText = "";
 			for(int i = 0; i < totalSeekTime.length; i++) {
@@ -291,14 +307,21 @@ public class Controller implements Initializable {
 			column_header_queue.setVisible(true);
 		}
 	}
-
+	
+	/**
+	 * Computes the disk load
+	 * @param tst The total seek time of the processed queue
+	 * @return The disk load in maximum of 4 significant figures.
+	 */
 	private String diskLoad(float tst) {
 		DecimalFormat df = new DecimalFormat("##.##");
 		df.setRoundingMode(RoundingMode.CEILING);
 		return df.format((float) (((tst / (float) (queue.size() - 1)) / (float) (cylinder + 1)) * 100.00));
 	}
 
-	//check if any algorithm is selected, display error message if none selected
+	/**
+	 * Checks if any one algorithm is selected, else throws an alert
+	 */
 	private void algorithmOptionCheck(){
 		if(fcfs.isSelected()==false && sstf.isSelected()==false && scan.isSelected()==false && cscan.isSelected()==false && look.isSelected()==false && clook.isSelected()==false){
 			message="Kindly select at least 1 algorithm to run simulation."; 
@@ -306,12 +329,17 @@ public class Controller implements Initializable {
 		}
 	}	    
 
-	//to put the data nodes into a series 
+	/**
+	 * Adds a series of data nodes into a LinkedList as temporary storage because of multi algorithm execution.
+	 * @see javafx.application.Controller#algorithmOptions()
+	 * @param tmp The input queue
+	 * @param operation The label for the series corresponding to the computing algorithm
+	 */
 	private void graphingData(LinkedList<Integer> tmp, String operation) {
 		int i = 0;
 		ListIterator<Integer> itTmp = tmp.listIterator();
-		itTmp.next();
-		itTmp.next();
+		itTmp.next(); //Ignore total seek time here
+		itTmp.next(); //Ignore tail value
 
 		lsSeries.add(new XYChart.Series<Integer,Integer>());
 		lsSeries.get(seriesCounter).setName(operation);
@@ -321,14 +349,19 @@ public class Controller implements Initializable {
 		seriesCounter++;
 	}
 
-	//put resulting series for algorithm into a list and add data series to load linechart 
+	/**
+	 * Adds the LinkedList with line chart series into the LineChart object.
+	 */
 	private void addAlgorithmSeries(){
 		for(int i = 0; i < seriesCounter; i++)
 			custom_linechart.getData().add(lsSeries.get(i));
 	}
 
 
-	//for printing description in text area
+	/**
+	 * For printing extra text in the Description TextArea
+	 * @param des The extra string
+	 */
 	private void printText(String des){
 		description_text.setText(
 				"This is a simple disk scheduling simulator to\n" 
@@ -343,7 +376,9 @@ public class Controller implements Initializable {
 	}
 
 
-	//display error dialogue	
+	/**
+	 * Displays alert box along with the error message	
+	 */
 	public void errorMessage(){
 		Alert alert = new Alert(AlertType.ERROR);
 		alert.setTitle("Error Dialog");
@@ -353,47 +388,64 @@ public class Controller implements Initializable {
 	}
 
 
-	//to clear all values to default (null)
+	/**
+	 * Resets the interface to factory default interface
+	 */
 	@FXML
 	public void reset() {
+		//Resets everything including the class values as well
 		resetInternal();
-
+		
+		//Flush the user input TextArea
 		cylinderamount.clear();
 		currenthead.clear();
 		jobreq.clear();
-
+		
+		//Deselects all algorithm selection
 		fcfs.setSelected(false);
 		sstf.setSelected(false);
 		scan.setSelected(false);
 		cscan.setSelected(false);
 		look.setSelected(false);
 		clook.setSelected(false);
-
+		
+		//Resets to custom
 		cylinderamount.setEditable(true);
 		currenthead.setEditable(true);
 		jobreq.setEditable(true);
-
+		
+		//Hide the processed queue information
 		grid_pane.setVisible(false);
-
+		
+		//Flush all error messages
 		message="";
 		message2="";
-
-		desc_label.setText("Description");
+		
+		//Reset the ComboBox to default message
 		load_combo.setValue(load_message);
 		
+		//Hide input queue TextArea
 		input_queuelabel.setVisible(false);
 		input_queuetext.setVisible(false);
 		input_queuetext.clear();
 		
+		//Reset description
+		desc_label.setText("Description");
 		printText("");
 	}
-
+	
+	/**
+	 * Resets a portion of the interface and Controller fields
+	 */
 	private void resetInternal(){
+		//Clear the graph data
 		lsSeries.clear();
 		custom_linechart.getData().clear();
+		//Clear the user input queue
 		queue.clear();
 		seriesCounter = 0;
-
+		
+		//Hide the processed queue information
 		fcfs_label.setVisible(false);
 		sstf_label.setVisible(false);
 		scan_label.setVisible(false);
@@ -412,13 +464,18 @@ public class Controller implements Initializable {
 		column_header_queue.setVisible(false);
 	}
 
-	//to pass parameters and run simulation
+	/**
+	 * Executes the simulation and does input validation
+	 */
 	@FXML
 	public void simulate(){
 		try{
+			//Readies the interface for simulation
 			grid_pane.setVisible(true);
 			resetInternal();
-			algorithmOptionCheck();	
+			algorithmOptionCheck();
+			
+			//The input queue
 			cylinder = Integer.parseInt(cylinderamount.getText().trim());
 			head = Integer.parseInt(currenthead.getText().trim());
 			if(head > cylinder || cylinder < 0 || head < 0) {
