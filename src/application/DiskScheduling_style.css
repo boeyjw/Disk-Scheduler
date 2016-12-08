@@ -1,0 +1,13 @@
+.enlargeText {
+	-fx-font-family: "Segoe UI";
+	-fx-font-size: 17px;
+	-fx-font-style: normal;
+	-fx-font-weight: 400;
+}
+
+.enlargeLabel {
+	-fx-font-family: "Segoe UI";
+	-fx-font-size: 14px;
+	-fx-font-style: normal;
+	-fx-font-weight: 400;
+}

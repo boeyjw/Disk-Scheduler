@@ -1,17 +1,11 @@
 package application;
 	
 import javafx.application.Application;
-import javafx.fxml.FXML;
-//import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-//import javafx.scene.control.Button;
-//import javafx.scene.control.TextField;
-//import javafx.scene.control.Tooltip;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.image.Image;
 
 
 public class Main extends Application{
@@ -22,7 +16,8 @@ public class Main extends Application{
 			
 			Parent root = FXMLLoader.load(getClass().getResource("DiskScheduling_view.fxml"));
 			Scene scene = new Scene(root);
-			//scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+			scene.getStylesheets().add(getClass().getResource("/application/DiskScheduling_style.css").toExternalForm());
+			primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("Hard-Disk.png"))); 
 			primaryStage.setScene(scene);
 			primaryStage.setTitle("Disk Scheduling Simulator"); 					
 			primaryStage.show();
